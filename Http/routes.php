@@ -1,6 +1,13 @@
 <?php
 
-Route::group(['middleware' => 'web', 'prefix' => 'contact', 'namespace' => 'Modules\Contact\Http\Controllers'], function()
-{
-    Route::get('/', 'ContactController@index');
+Route::group([
+    'prefix'     => 'admin/contact',
+    'as'         => 'admin::contact.',
+    'middleware' => ['web', 'auth.admin'],
+    'namespace'  => 'Modules\Contact\Http\Controllers\Admin'
+], function () {
+    Route::get('/', [
+        'uses' => 'ContactController@index',
+        'as'   => 'index'
+    ]);
 });
