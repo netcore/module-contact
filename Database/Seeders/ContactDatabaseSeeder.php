@@ -18,5 +18,7 @@ class ContactDatabaseSeeder extends Seeder
 
          $this->call(MenusTableSeederTableSeeder::class);
          $this->call(ItemsTableSeederTableSeeder::class);
+         $this->call(ContentTableSeederTableSeeder::class);
+         $this->call(LocationsTableSeederTableSeeder::class);
     }
 }

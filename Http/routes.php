@@ -15,4 +15,14 @@ Route::group([
         'uses' => 'ContactItemController@update',
         'as'   => 'item.update'
     ]);
+
+    Route::put('/content/update', [
+        'uses' => 'ContactController@updateContent',
+        'as'   => 'content.update'
+    ]);
+
+    Route::post('/map/update', [
+        'uses' => 'ContactController@map',
+        'as'   => 'map.update'
+    ]);
 });

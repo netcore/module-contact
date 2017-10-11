@@ -5,7 +5,9 @@ namespace Modules\Contact\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Contact\Models\Content;
 use Modules\Contact\Models\Item;
+use Modules\Contact\Models\Location;
 
 class ContactController extends Controller
 {
@@ -16,60 +18,23 @@ class ContactController extends Controller
     public function index()
     {
         $items = Item::get();
+        $content = Content::first();
+        $location = Location::first();
 
-        return view('contact::index', compact('items'));
+        return view('contact::index', compact('items', 'content', 'location'));
     }
 
     /**
-     * Show the form for creating a new resource.
-     * @return Response
+     * @param Request $request
+     * @return mixed
      */
-    public function create()
+    public function updateContent(Request $request)
     {
-        return view('contact::create');
-    }
+        $content = Content::first();
 
-    /**
-     * Store a newly created resource in storage.
-     * @param  Request $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-    }
+        $content->text = $request->get('text', '');
+        $content->save();
 
-    /**
-     * Show the specified resource.
-     * @return Response
-     */
-    public function show()
-    {
-        return view('contact::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     * @return Response
-     */
-    public function edit()
-    {
-        return view('contact::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     * @param  Request $request
-     * @return Response
-     */
-    public function update(Request $request)
-    {
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     * @return Response
-     */
-    public function destroy()
-    {
+        return redirect()->back()->withSuccess('Content text successfully edited!');
     }
 }
