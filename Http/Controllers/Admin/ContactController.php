@@ -5,6 +5,7 @@ namespace Modules\Contact\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Contact\Models\Item;
 
 class ContactController extends Controller
 {
@@ -14,7 +15,9 @@ class ContactController extends Controller
      */
     public function index()
     {
-        return view('contact::index');
+        $items = Item::get();
+
+        return view('contact::index', compact('items'));
     }
 
     /**

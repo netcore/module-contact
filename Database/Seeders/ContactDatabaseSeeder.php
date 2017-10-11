@@ -17,5 +17,6 @@ class ContactDatabaseSeeder extends Seeder
         Model::unguard();
 
          $this->call(MenusTableSeederTableSeeder::class);
+         $this->call(ItemsTableSeederTableSeeder::class);
     }
 }

@@ -10,4 +10,9 @@ Route::group([
         'uses' => 'ContactController@index',
         'as'   => 'index'
     ]);
+
+    Route::put('/item/update', [
+        'uses' => 'ContactItemController@update',
+        'as'   => 'item.update'
+    ]);
 });
