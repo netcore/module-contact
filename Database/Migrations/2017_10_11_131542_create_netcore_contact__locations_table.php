@@ -15,7 +15,8 @@ class CreateNetcoreContactLocationsTable extends Migration
     {
         Schema::create('netcore_contact__locations', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('address');
+            $table->string('address_full');
+            $table->string('address_short');
             $table->string('country');
             $table->string('city');
             $table->string('zip_code');

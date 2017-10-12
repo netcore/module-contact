@@ -61,71 +61,35 @@
             </div>
         </div>
     </div>
-    {{--<div class="row">--}}
-        {{--<div class="col-md-12">--}}
-            {{--<div class="panel panel-inverse">--}}
-                {{--<div class="panel-heading">--}}
-                    {{--<h4 class="panel-title">Map</h4>--}}
-                {{--</div>--}}
-                {{--<div class="panel-body">--}}
-                        {{--{!! Form::open(['route' => 'admin::contact.map.update']) !!}--}}
-
-                        {{--<div class="col-md-6">--}}
-                            {{--<div id="contact-map" class="map"></div>--}}
-                        {{--</div>--}}
-                        {{--<div class="col-md-6">--}}
-
-                            {{--{!! Form::hidden('lat', $location->lat) !!}--}}
-                            {{--{!! Form::hidden('lng', $location->lng) !!}--}}
-
-                            {{--<div class="form-group">--}}
-                                {{--{!! Form::label('address_full', 'Full address:') !!}--}}
-                                {{--<div class="input-group">--}}
-                                    {{--{!! Form::text('address_full', $location->address_full, ['class' => 'form-control']) !!}--}}
-                                    {{--<div class="input-group-btn">--}}
-                                        {{--<button type="button" class="btn btn-success" id="search-map">--}}
-                                            {{--<i class="fa fa-search"></i>--}}
-                                        {{--</button>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                            {{--</div>--}}
-
-                            {{--<div class="form-group">--}}
-                                {{--{!! Form::label('address_short', 'Short address:') !!}--}}
-                                {{--{!! Form::text('address_short', $location->address_short, ['class' => 'form-control']) !!}--}}
-                            {{--</div>--}}
-
-                            {{--<div class="row">--}}
-                                {{--<div class="form-group col-md-4">--}}
-                                    {{--{!! Form::label('country', 'Country:') !!}--}}
-                                    {{--{!! Form::text('country', $location->country, ['class' => 'form-control']) !!}--}}
-                                {{--</div>--}}
-
-                                {{--<div class="form-group col-md-4">--}}
-                                    {{--{!! Form::label('city', 'City:') !!}--}}
-                                    {{--{!! Form::text('city', $location->city, ['class' => 'form-control']) !!}--}}
-                                {{--</div>--}}
-
-                                {{--<div class="form-group col-md-4">--}}
-                                    {{--{!! Form::label('zip_code', 'ZIP code:') !!}--}}
-                                    {{--{!! Form::text('zip_code', $location->zip_code, ['class' => 'form-control']) !!}--}}
-                                {{--</div>--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-
-                        {{--<button type="submit" class="btn btn-success">--}}
-                            {{--<i class="fa fa-save"></i> Save location data--}}
-                        {{--</button>--}}
-                        {{--{!! Form::close() !!}--}}
-                    {{--</div>--}}
-            {{--</div>--}}
-        {{--</div>--}}
-    {{--</div>--}}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <h4 class="panel-title">Map</h4>
+                </div>
+                <div class="panel-body">
+                    @include('contact::_partials.panels._map')
+                </div>
+            </div>
+        </div>
+    </div>
 
     @include('contact::_partials.modal-edit-item')
 @endsection
 
+@section('styles')
+    <style>
+        .map {
+            width: 100%;
+            height: 195px;
+        }
+    </style>
+@endsection
+
 @section('scripts')
+    <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyDoxElWVmbMEV44F4-joUDSZurbhFo1UyE&v=3.exp"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/gmaps.js/0.4.24/gmaps.js"></script>
+    <script src="{{ versionedAsset('/assets/contact/js/contact.js') }}"></script>
     <script>
         $(function () {
             $('.summernote').summernote();

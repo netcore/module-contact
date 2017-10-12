@@ -21,8 +21,8 @@ Route::group([
         'as'   => 'content.update'
     ]);
 
-    Route::post('/map/update', [
-        'uses' => 'ContactController@map',
+    Route::put('/map/update', [
+        'uses' => 'ContactController@updateMap',
         'as'   => 'map.update'
     ]);
 });
