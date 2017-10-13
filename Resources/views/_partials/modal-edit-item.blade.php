@@ -30,6 +30,11 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="js-contact-form hidden">
+                        <select name="value" class="form-control">
+
+                        </select>
+                    </div>
 
                 </div>
                 <div class="form-group">

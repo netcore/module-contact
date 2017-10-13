@@ -9,6 +9,8 @@ use Modules\Contact\Http\Requests\LocationsRequest;
 use Modules\Contact\Models\Content;
 use Modules\Contact\Models\Item;
 use Modules\Contact\Models\Location;
+use Modules\Form\Models\Form;
+use Nwidart\Modules\Facades\Module;
 
 class ContactController extends Controller
 {
@@ -22,7 +24,13 @@ class ContactController extends Controller
         $content = Content::first();
         $location = Location::first();
 
-        return view('contact::index', compact('items', 'content', 'location'));
+        $module = Module::find('form');
+
+        if($module && $module->enabled()) {
+            $forms = Form::all();
+        }
+
+        return view('contact::index', compact('items', 'content', 'location', 'forms'));
     }
 
     /**

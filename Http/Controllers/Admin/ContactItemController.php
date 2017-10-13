@@ -27,7 +27,7 @@ class ContactItemController extends Controller
         if ($item->type != 'workdays') {
             $item->value = $request->get('value');
         } else {
-            $workdays = json_decode($item->value);
+            $workdays = collect(json_decode($item->value))->toArray();
 
             $newWorkDays = [];
             $i = 0;

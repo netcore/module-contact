@@ -35,7 +35,7 @@
                         </thead>
                         <tbody>
                         @foreach($items as $item)
-                            <tr class="object{{ $item->id }}" data-data="{{ $item->toJson() }}">
+                            <tr class="object{{ $item->id }}" data-data="{{ $item->toJson() }}" @if($item->type == 'ContactForm' && isset($forms)) data-form_id="{{ $item->value }}" data-forms="{{ $forms }}" @endif>
                                 <td>{{ ucfirst($item->type) }}</td>
                                 <td class="js-item-value">
                                     @if($item->type == 'workdays')
@@ -45,7 +45,7 @@
                                             @endforeach
                                         </ul>
                                     @else
-                                        {{ $item->value }}
+                                        {{ $item->type == 'ContactForm' ? $item->form->name : $item->value }}
                                     @endif
                                 </td>
                                 <td>
@@ -73,6 +73,7 @@
             </div>
         </div>
     </div>
+
 
     @include('contact::_partials.modal-edit-item')
 @endsection
@@ -111,15 +112,41 @@
                 if (data.type == 'workdays') {
                     form.find('.js-workday-fields').removeClass('hidden');
                     form.find('.js-other-fields').addClass('hidden');
+                    form.find('.js-contact-form').addClass('hidden');
 
                     var tableBody = form.find('.js-workday-fields table tbody').empty();
                     $.each(JSON.parse(data.value), function (field, value) {
                         tableBody.append('<tr><td>' + field + '</td><td><input type="text" value="' + value + '" name="value[]" class="form-control"></td></tr>');
                     })
+                } else if(data.type == 'ContactForm') {
+                    form.find('.js-contact-form').removeClass('hidden');
+                    form.find('.js-other-fields').addClass('hidden');
+                    form.find('.js-workday-fields').addClass('hidden');
+
+                    var currentFormId = JSON.parse(btn.parent().parent().attr('data-form_id'));
+                    var forms = JSON.parse(btn.parent().parent().attr('data-forms'));
+                    var formList = [];
+
+                    var select = $('.js-contact-form select');
+                    select.empty();
+
+                    $.each(forms, function (index, form) {
+                        var formId = form.id;
+                        var formName = form.name;
+                        if(currentFormId == formId) {
+                            select.append($('<option value="' + formId + '" selected>' + formName + '</option>'));
+                        } else {
+                            select.append($('<option value="' + formId + '">' + formName + '</option>'));
+                        }
+                    });
+
+                    console.log(formList);
                 } else {
                     form.find('[name="value"]').val(data.value);
                     form.find('.js-workday-fields').addClass('hidden');
                     form.find('.js-other-fields').removeClass('hidden');
+                    form.find('.js-contact-form').addClass('hidden');
+
                 }
 
                 form.on('submit', function (e) {
@@ -134,15 +161,25 @@
                             $('#edit-item').modal('hide');
                             form[0].reset();
                             var row = $('.item-table').find('.object' + response.data.id + '');
-                            if (response.data.type != 'workdays') {
-                                row.find('.js-item-value').text(response.data.value);
-                            } else {
+                            if(response.data.type == 'ContactForm') {
+                                var forms = JSON.parse(btn.parent().parent().attr('data-forms'));
+                                var formName = '';
+                                $.each(forms, function (index, form) {
+                                    if(form.id == response.data.value) {
+                                        formName = form.name;
+                                    }
+                                });
+
+                                row.find('.js-item-value').text(formName);
+                            } else if (response.data.type == 'workdays') {
                                 var workdayList = '<ul>';
                                 $.each(JSON.parse(response.data.value), function (day, time) {
                                     workdayList += '<li><b>' + day + '</b>: ' + time + '</li>';
                                 });
                                 workdayList += '</ul>';
                                 row.find('.js-item-value').html(workdayList);
+                            } else {
+                                row.find('.js-item-value').text(response.data.value);
                             }
                             row.attr('data-data', response.json);
 
