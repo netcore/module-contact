@@ -4,6 +4,7 @@ namespace Modules\Contact\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
+use Modules\Contact\Repositories\ContactRepository;
 
 class ContactServiceProvider extends ServiceProvider
 {
@@ -35,7 +36,9 @@ class ContactServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton('contact', function ($app) {
+            return new ContactRepository();
+        });
     }
 
     /**
