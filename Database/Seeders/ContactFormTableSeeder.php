@@ -83,7 +83,7 @@ class ContactFormTableSeeder extends Seeder
         }
 
         Item::firstOrCreate([
-            'type'  => 'ContactForm',
+            'type'  => 'contact-form',
             'value' => $form->id
         ]);
     }

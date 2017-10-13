@@ -30,7 +30,9 @@ class ContactController extends Controller
             $forms = Form::all();
         }
 
-        return view('contact::index', compact('items', 'content', 'location', 'forms'));
+        $config = config('netcore.module-contact');
+
+        return view('contact::index', compact('items', 'content', 'location', 'forms', 'config'));
     }
 
     /**

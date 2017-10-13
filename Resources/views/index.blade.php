@@ -2,78 +2,86 @@
 
 @section('content')
     <div class="row">
-
-        <div class="col-md-6">
-            <div class="panel panel-inverse">
-                <div class="panel-heading">
-                    <h4 class="panel-title">Contact page text</h4>
-                </div>
-                <div class="panel-body">
-                    @include('admin::_partials._messages')
-                    {{ Form::open(['route' => 'admin::contact.content.update', 'method' => 'put']) }}
-                    {{ Form::textarea('text', $content->text, ['class' => 'form-control summernote']) }}
-                    <div class="pull-right">
-                        {{ Form::submit('Save', ['class' => 'btn btn-success']) }}
+        @if($config['text-block'])
+            <div class="col-md-6">
+                <div class="panel panel-inverse">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Contact page text</h4>
                     </div>
-                    {{ Form::close() }}
+                    <div class="panel-body">
+                        @include('admin::_partials._messages')
+                        {{ Form::open(['route' => 'admin::contact.content.update', 'method' => 'put']) }}
+                        {{ Form::textarea('text', $content->text, ['class' => 'form-control summernote']) }}
+                        <div class="pull-right">
+                            {{ Form::submit('Save', ['class' => 'btn btn-success']) }}
+                        </div>
+                        {{ Form::close() }}
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="panel panel-inverse">
-                <div class="panel-heading">
-                    <h4 class="panel-title">Contact information</h4>
-                </div>
-                <div class="panel-body">
-                    <table class="table table-bordered item-table">
-                        <thead>
-                        <tr>
-                            <th>Type</th>
-                            <th>Value</th>
-                            <th>Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($items as $item)
-                            <tr class="object{{ $item->id }}" data-data="{{ $item->toJson() }}" @if($item->type == 'ContactForm' && isset($forms)) data-form_id="{{ $item->value }}" data-forms="{{ $forms }}" @endif>
-                                <td>{{ ucfirst($item->type) }}</td>
-                                <td class="js-item-value">
-                                    @if($item->type == 'workdays')
-                                        <ul>
-                                            @foreach(json_decode($item->value) as $day => $time)
-                                                <li><b>{{ $day }}</b>: {{ $time }}</li>
-                                            @endforeach
-                                        </ul>
-                                    @else
-                                        {{ $item->type == 'ContactForm' ? $item->form->name : $item->value }}
-                                    @endif
-                                </td>
-                                <td>
-                                    <button data-id="{{ $item->id }}" class="btn btn-primary edit-item"
-                                            data-toggle="modal" data-target="#edit-item">Edit
-                                    </button>
-                                </td>
+        @endif
+        @if($config['information']['enabled'])
+            <div class="col-md-6">
+                <div class="panel panel-inverse">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Contact information</h4>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-bordered item-table">
+                            <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Value</th>
+                                <th>Action</th>
                             </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                            @foreach($items as $item)
+                                @if(!$config['information'][$item->type])
+                                    @continue
+                                @endif
+                                <tr class="object{{ $item->id }}" data-data="{{ $item->toJson() }}" @if($item->type == 'contact-form' && isset($forms)) data-form_id="{{ $item->value }}" data-forms="{{ $forms }}" @endif>
+                                    <td>{{ ucfirst(str_replace('-', ' ', $item->type)) }}</td>
+                                    <td class="js-item-value">
+                                        @if($item->type == 'workdays')
+                                            <ul>
+                                                @foreach(json_decode($item->value) as $day => $time)
+                                                    <li><b>{{ $day }}</b>: {{ $time }}</li>
+                                                @endforeach
+                                            </ul>
+                                        @else
+                                            {{ $item->type == 'contact-form' ? $item->form->name : $item->value }}
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <button data-id="{{ $item->id }}" class="btn btn-primary edit-item"
+                                                data-toggle="modal" data-target="#edit-item">Edit
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-inverse">
-                <div class="panel-heading">
-                    <h4 class="panel-title">Map</h4>
-                </div>
-                <div class="panel-body">
-                    @include('contact::_partials.panels._map')
-                </div>
-            </div>
-        </div>
+        @endif
     </div>
 
+    @if($config['map'])
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-inverse">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Map</h4>
+                    </div>
+                    <div class="panel-body">
+                        @include('contact::_partials.panels._map')
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 
     @include('contact::_partials.modal-edit-item')
 @endsection
@@ -118,7 +126,7 @@
                     $.each(JSON.parse(data.value), function (field, value) {
                         tableBody.append('<tr><td>' + field + '</td><td><input type="text" value="' + value + '" name="value[]" class="form-control"></td></tr>');
                     })
-                } else if(data.type == 'ContactForm') {
+                } else if(data.type == 'contact-form') {
                     form.find('.js-contact-form').removeClass('hidden');
                     form.find('.js-other-fields').addClass('hidden');
                     form.find('.js-workday-fields').addClass('hidden');
@@ -161,7 +169,7 @@
                             $('#edit-item').modal('hide');
                             form[0].reset();
                             var row = $('.item-table').find('.object' + response.data.id + '');
-                            if(response.data.type == 'ContactForm') {
+                            if(response.data.type == 'contact-form') {
                                 var forms = JSON.parse(btn.parent().parent().attr('data-forms'));
                                 var formName = '';
                                 $.each(forms, function (index, form) {

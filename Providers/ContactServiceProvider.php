@@ -46,7 +46,7 @@ class ContactServiceProvider extends ServiceProvider
     protected function registerConfig()
     {
         $this->publishes([
-            __DIR__.'/../Config/config.php' => config_path('contact.php'),
+            __DIR__.'/../Config/config.php' => config_path('netcore/module-contact.php'),
         ], 'config');
         $this->mergeConfigFrom(
             __DIR__.'/../Config/config.php', 'contact'
