@@ -28,6 +28,10 @@ class ItemsTableSeederTableSeeder extends Seeder
                 'value' => 'info@admin.com'
             ],
             [
+                'type'  => 'contact-email',
+                'value' => 'contact@admin.com'
+            ],
+            [
                 'type'  => 'workdays',
                 'value' => '{"Monday - Friday":"09:00 - 18:00","Saturday":"09:00 - 15:00","Sunday":"Closed"}'
             ],
