@@ -83,6 +83,24 @@
         </div>
     @endif
 
+    @if($config['information']['contact-form'])
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-inverse">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Contact Form
+                            <div class="pull-right"><a href="{{ route('admin::form.edit', contact()->items('contact-form')) }}"
+                                                       class="btn btn-primary">Edit</a></div>
+                        </h4>
+                    </div>
+                    <div class="panel-body">
+                        {!! app('forms')->replace('[form=' . contact()->items('contact-form') . ']') !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
     @include('contact::_partials.modal-edit-item')
 @endsection
 

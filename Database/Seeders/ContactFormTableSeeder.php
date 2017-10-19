@@ -69,8 +69,6 @@ class ContactFormTableSeeder extends Seeder
 
         $form = Form::firstOrCreate([
             'name'       => 'Contact form',
-            'type_value' => '/contact',
-            'type'       => 'url'
         ]);
 
         $i = 1;
