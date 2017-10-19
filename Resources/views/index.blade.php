@@ -88,13 +88,25 @@
             <div class="col-md-12">
                 <div class="panel panel-inverse">
                     <div class="panel-heading">
-                        <h4 class="panel-title">Contact Form
+                        <h4 class="panel-title">Contact Form entries
                             <div class="pull-right"><a href="{{ route('admin::form.edit', contact()->items('contact-form')) }}"
-                                                       class="btn btn-primary">Edit</a></div>
+                                                       class="btn btn-primary">Edit form</a></div>
                         </h4>
                     </div>
                     <div class="panel-body">
-                        {!! app('forms')->replace('[form=' . contact()->items('contact-form') . ']') !!}
+                        <table class="table table-bordered" id="datatable">
+                            <thead>
+                            <tr>
+                                @foreach ($form->fields as $field)
+                                    <th>{{ $field->label }}</th>
+                                @endforeach
+                                <th>Submitted At</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -223,6 +235,36 @@
                     });
                 })
             });
+
+            $('#datatable').DataTable({
+                responsive: true,
+                serverSide: true,
+                processing: true,
+                ajax: '{{ route('admin::form.entries.pagination', $form->id) }}',
+
+                columns: [
+                        @foreach ($form->fields as $field)
+                    {data: '{{ $field->key }}', name: '{{ $field->key }}'},
+                        @endforeach
+                    {
+                        data: 'submitted_at',
+                        name: 'submitted_at',
+                        searchable: false,
+                        sortable: false,
+                        width: '10%',
+                        className: 'text-center'
+                    },
+                    {
+                        data: 'actions',
+                        name: 'actions',
+                        searchable: false,
+                        sortable: false,
+                        width: '10%',
+                        className: 'text-center'
+                    }
+                ]
+
+            })
         });
     </script>
 @endsection

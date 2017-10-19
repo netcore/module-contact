@@ -28,11 +28,13 @@ class ContactController extends Controller
 
         if($module && $module->enabled()) {
             $forms = Form::all();
+            $form = $forms->where('id', contact()->items('contact-form'))->first();
         }
 
         $config = config('netcore.module-contact');
 
-        return view('contact::index', compact('items', 'content', 'location', 'forms', 'config'));
+
+        return view('contact::index', compact('items', 'content', 'location', 'forms', 'config', 'form'));
     }
 
     /**
