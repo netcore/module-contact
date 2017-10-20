@@ -2,12 +2,16 @@
 
 namespace Modules\Contact\Providers;
 
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
+use Modules\Contact\Emails\NotifyAboutContactMessage;
 use Modules\Contact\Repositories\ContactRepository;
+use Modules\Form\Repositories\FormsRepository;
 
 class ContactServiceProvider extends ServiceProvider
 {
+
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -27,6 +31,16 @@ class ContactServiceProvider extends ServiceProvider
         $this->registerViews();
         $this->registerFactories();
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
+
+        $module = Module::find('form');
+
+        if ($module && $module->enabled()) {
+            FormsRepository::addNewEvent('contact-us', function ($data) {
+                Mail::to(contact()->items('contact-email'))->queue(
+                    new NotifyAboutContactMessage($data)
+                );
+            });
+        }
     }
 
     /**
@@ -49,10 +63,10 @@ class ContactServiceProvider extends ServiceProvider
     protected function registerConfig()
     {
         $this->publishes([
-            __DIR__.'/../Config/config.php' => config_path('netcore/module-contact.php'),
+            __DIR__ . '/../Config/config.php' => config_path('netcore/module-contact.php'),
         ], 'config');
         $this->mergeConfigFrom(
-            __DIR__.'/../Config/config.php', 'contact'
+            __DIR__ . '/../Config/config.php', 'contact'
         );
     }
 
@@ -65,7 +79,7 @@ class ContactServiceProvider extends ServiceProvider
     {
         $viewPath = resource_path('views/modules/contact');
 
-        $sourcePath = __DIR__.'/../Resources/views';
+        $sourcePath = __DIR__ . '/../Resources/views';
 
         $this->publishes([
             $sourcePath => $viewPath
@@ -88,7 +102,7 @@ class ContactServiceProvider extends ServiceProvider
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'contact');
         } else {
-            $this->loadTranslationsFrom(__DIR__ .'/../Resources/lang', 'contact');
+            $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'contact');
         }
     }
 
@@ -98,7 +112,7 @@ class ContactServiceProvider extends ServiceProvider
      */
     public function registerFactories()
     {
-        if (! app()->environment('production')) {
+        if (!app()->environment('production')) {
             app(Factory::class)->load(__DIR__ . '/Database/factories');
         }
     }

@@ -8,6 +8,7 @@ use Nwidart\Modules\Facades\Module;
 
 class ContactDatabaseSeeder extends Seeder
 {
+
     /**
      * Run the database seeds.
      *
@@ -17,15 +18,15 @@ class ContactDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-         $this->call(MenusTableSeederTableSeeder::class);
-         $this->call(ItemsTableSeederTableSeeder::class);
-         $this->call(ContentTableSeederTableSeeder::class);
-         $this->call(LocationsTableSeederTableSeeder::class);
+        $this->call(MenusTableSeederTableSeeder::class);
+        $this->call(ItemsTableSeederTableSeeder::class);
+        $this->call(ContentTableSeederTableSeeder::class);
+        $this->call(LocationsTableSeederTableSeeder::class);
 
-         $module = Module::find('form');
+        $module = Module::find('form');
 
-         if($module && $module->enabled()) {
-             $this->call(ContactFormTableSeeder::class);
-         }
+        if ($module && $module->enabled()) {
+            $this->call(ContactFormTableSeeder::class);
+        }
     }
 }
