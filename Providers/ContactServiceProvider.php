@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factory;
 use Modules\Contact\Emails\NotifyAboutContactMessage;
 use Modules\Contact\Repositories\ContactRepository;
 use Modules\Form\Repositories\FormsRepository;
+use Nwidart\Modules\Facades\Module;
 
 class ContactServiceProvider extends ServiceProvider
 {
