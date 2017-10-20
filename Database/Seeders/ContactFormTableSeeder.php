@@ -73,12 +73,10 @@ class ContactFormTableSeeder extends Seeder
         ]);
 
         $i = 1;
-        foreach ($fields as $field) {
-            $field['order'] = $i;
-            $field['meta'] = '{"attributes":[]}';
+        foreach ($fields as $i => $field) {
+            $field['order'] = $i + 1;
             $formField = $form->fields()->firstOrCreate(array_except($field, 'translations'));
             $formField->storeTranslations($field['translations']);
-            $i++;
         }
 
         Item::firstOrCreate([
