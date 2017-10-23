@@ -11,7 +11,7 @@
                     <div class="panel-body">
                         @include('admin::_partials._messages')
                         {{ Form::open(['route' => 'admin::contact.content.update', 'method' => 'put']) }}
-                        {{ Form::textarea('text', $content->text, ['class' => 'form-control summernote']) }}
+                        {{ Form::textarea('text', $content->text, ['class' => 'form-control summernote-with-filemanager']) }}
                         <div class="pull-right">
                             {{ Form::submit('Save', ['class' => 'btn btn-success']) }}
                         </div>
@@ -131,7 +131,6 @@
     <script src="{{ versionedAsset('/assets/contact/js/contact.js') }}"></script>
     <script>
         $(function () {
-            $('.summernote').summernote();
             //init switcher
             $('.single-entries-changeable-state').each(function (i, switcher) {
                 new Switchery(switcher);
