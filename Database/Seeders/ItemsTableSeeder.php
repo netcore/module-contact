@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Contact\Models\Item;
 
-class ItemsTableSeederTableSeeder extends Seeder
+class ItemsTableSeeder extends Seeder
 {
 
     /**
@@ -26,6 +26,10 @@ class ItemsTableSeederTableSeeder extends Seeder
             [
                 'type'  => 'email',
                 'value' => 'info@admin.com'
+            ],
+            [
+                'type'  => 'location',
+                'value' => 'Kr. Barona 111. Rīga, Latvia Lv4601'
             ],
             [
                 'type'  => 'contact-email',

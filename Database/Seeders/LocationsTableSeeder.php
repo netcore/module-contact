@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Contact\Models\Location;
 
-class LocationsTableSeederTableSeeder extends Seeder
+class LocationsTableSeeder extends Seeder
 {
 
     /**

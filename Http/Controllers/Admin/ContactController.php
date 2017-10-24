@@ -28,7 +28,7 @@ class ContactController extends Controller
 
         if($module && $module->enabled()) {
             $forms = Form::all();
-            $form = $forms->where('id', contact()->items('contact-form'))->first();
+            $form = $forms->where('id', contact()->item('contact-form'))->first();
         }
 
         $config = config('netcore.module-contact');

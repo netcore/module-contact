@@ -89,7 +89,7 @@
                 <div class="panel panel-inverse">
                     <div class="panel-heading">
                         <h4 class="panel-title">Contact Form entries
-                            <div class="pull-right"><a href="{{ route('admin::form.edit', contact()->items('contact-form')) }}"
+                            <div class="pull-right"><a href="{{ route('admin::form.edit', contact()->item('contact-form')) }}"
                                                        class="btn btn-primary">Edit form</a></div>
                         </h4>
                     </div>

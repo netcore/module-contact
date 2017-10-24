@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Modules\Admin\Models\Menu;
 use Modules\Admin\Models\MenuItem;
 
-class MenusTableSeederTableSeeder extends Seeder
+class MenusTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.

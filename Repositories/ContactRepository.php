@@ -36,7 +36,7 @@ class ContactRepository
      * @param null $key
      * @return array|null|string
      */
-    public function items($key = null)
+    public function item($key = null)
     {
         if (!$this->config['information']['enabled']) {
             return 'Getting information is disabled';

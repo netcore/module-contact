@@ -37,7 +37,7 @@ class ContactServiceProvider extends ServiceProvider
 
         if ($module && $module->enabled()) {
             FormsRepository::addNewEvent('contact-us', function ($data) {
-                Mail::to(contact()->items('contact-email'))->queue(
+                Mail::to(contact()->item('contact-email'))->queue(
                     new NotifyAboutContactMessage($data)
                 );
             });

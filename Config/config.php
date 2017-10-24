@@ -15,6 +15,7 @@ return [
         'phone'         => true,
         'email'         => true,
         'workdays'      => true,
+        'location'      => true,
         'contact-email' => true,
         'contact-form'  => true
     ]

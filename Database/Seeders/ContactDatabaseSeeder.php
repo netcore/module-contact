@@ -18,10 +18,10 @@ class ContactDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        $this->call(MenusTableSeederTableSeeder::class);
-        $this->call(ItemsTableSeederTableSeeder::class);
-        $this->call(ContentTableSeederTableSeeder::class);
-        $this->call(LocationsTableSeederTableSeeder::class);
+        $this->call(MenusTableSeeder::class);
+        $this->call(ItemsTableSeeder::class);
+        $this->call(ContentTableSeeder::class);
+        $this->call(LocationsTableSeeder::class);
 
         $module = Module::find('form');
 

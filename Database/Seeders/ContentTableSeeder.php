@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Contact\Models\Content;
 
-class ContentTableSeederTableSeeder extends Seeder
+class ContentTableSeeder extends Seeder
 {
 
     /**
