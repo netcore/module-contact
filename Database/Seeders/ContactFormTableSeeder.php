@@ -21,82 +21,113 @@ class ContactFormTableSeeder extends Seeder
 
         $fields = [
             [
-                'key'          => 'name',
-                'type'         => 'text',
-                'meta'   => [
-                    'attributes' => ['required'],
-                    'options' => [],
-                    'validation' => ['required'],
+                [
+                    'key'  => 'name',
+                    'type' => 'text',
                 ],
-                'translations' => [
-                    'en' => [
-                        'label' => 'Name'
+                [
+                    'key'          => 'name',
+                    'type'         => 'text',
+                    'meta'         => [
+                        'attributes' => ['required'],
+                        'options'    => [],
+                        'validation' => ['required'],
+                    ],
+                    'translations' => [
+                        'en' => [
+                            'label' => 'Name'
+                        ]
                     ]
-                ]
+                ],
             ],
             [
-                'key'          => 'surname',
-                'type'         => 'text',
-                'meta'   => [
-                    'attributes' => ['required'],
-                    'options' => [],
-                    'validation' => ['required'],
+                [
+                    'key'  => 'surname',
+                    'type' => 'text',
                 ],
-                'translations' => [
-                    'en' => [
-                        'label' => 'Surname'
+                [
+                    'key'          => 'surname',
+                    'type'         => 'text',
+                    'meta'         => [
+                        'attributes' => ['required'],
+                        'options'    => [],
+                        'validation' => ['required'],
+                    ],
+                    'translations' => [
+                        'en' => [
+                            'label' => 'Surname'
+                        ]
                     ]
-                ]
+                ],
             ],
             [
-                'key'          => 'company',
-                'type'         => 'text',
-                'translations' => [
-                    'en' => [
-                        'label' => 'Company / Organization'
+                [
+                    'key'  => 'company',
+                    'type' => 'text',
+                ],
+                [
+                    'key'          => 'company',
+                    'type'         => 'text',
+                    'translations' => [
+                        'en' => [
+                            'label' => 'Company / Organization'
+                        ]
                     ]
-                ]
+                ],
             ],
             [
-                'key'          => 'email',
-                'type'         => 'text',
-                'meta'   => [
-                    'attributes' => ['required'],
-                    'options' => [],
-                    'validation' => ['required', 'email'],
+                [
+                    'key'  => 'email',
+                    'type' => 'text',
                 ],
-                'translations' => [
-                    'en' => [
-                        'label' => 'Email'
+                [
+                    'key'          => 'email',
+                    'type'         => 'text',
+                    'meta'         => [
+                        'attributes' => ['required'],
+                        'options'    => [],
+                        'validation' => ['required', 'email'],
+                    ],
+                    'translations' => [
+                        'en' => [
+                            'label' => 'Email'
+                        ]
                     ]
-                ]
+                ],
             ],
             [
-                'key'          => 'message',
-                'type'         => 'textarea',
-                'meta'   => [
-                    'attributes' => ['required'],
-                    'options' => [],
-                    'validation' => ['required'],
+                [
+                    'key'  => 'message',
+                    'type' => 'textarea',
                 ],
-                'translations' => [
-                    'en' => [
-                        'label' => 'Message'
+                [
+                    'key'          => 'message',
+                    'type'         => 'textarea',
+                    'meta'         => [
+                        'attributes' => ['required'],
+                        'options'    => [],
+                        'validation' => ['required'],
+                    ],
+                    'translations' => [
+                        'en' => [
+                            'label' => 'Message'
+                        ]
                     ]
-                ]
-            ],
+                ],
+            ]
         ];
 
         $form = Form::firstOrCreate([
-            'key'        => 'contact-us',
-            'name'       => 'Contact us',
+            'key'  => 'contact-us',
+            'name' => 'Contact us',
         ]);
 
         $i = 1;
         foreach ($fields as $i => $field) {
-            $field['order'] = $i + 1;
-            $formField = $form->fields()->firstOrCreate(array_except($field, 'translations'));
-            $formField->storeTranslations($field['translations']);
+            $f = $field[1];
+            $f['order'] = $i + 1;
+            $formField = $form->fields()->firstOrCreate($field[0], array_except($f, 'translations'));
+            $formField->storeTranslations($f['translations']);
         }
 
         Item::firstOrCreate([
