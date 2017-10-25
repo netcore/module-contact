@@ -23,6 +23,11 @@ class ContactFormTableSeeder extends Seeder
             [
                 'key'          => 'name',
                 'type'         => 'text',
+                'meta'   => [
+                    'attributes' => ['required'],
+                    'options' => [],
+                    'validation' => ['required', 'email'],
+                ],
                 'translations' => [
                     'en' => [
                         'label' => 'Name'
@@ -32,6 +37,11 @@ class ContactFormTableSeeder extends Seeder
             [
                 'key'          => 'surname',
                 'type'         => 'text',
+                'meta'   => [
+                    'attributes' => ['required'],
+                    'options' => [],
+                    'validation' => ['required'],
+                ],
                 'translations' => [
                     'en' => [
                         'label' => 'Surname'
@@ -59,6 +69,11 @@ class ContactFormTableSeeder extends Seeder
             [
                 'key'          => 'message',
                 'type'         => 'textarea',
+                'meta'   => [
+                    'attributes' => ['required'],
+                    'options' => [],
+                    'validation' => ['required'],
+                ],
                 'translations' => [
                     'en' => [
                         'label' => 'Message'
