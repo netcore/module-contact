@@ -246,8 +246,8 @@
                     {data: '{{ $field->key }}', name: '{{ $field->key }}'},
                         @endforeach
                     {
-                        data: 'submitted_at',
-                        name: 'submitted_at',
+                        data: 'created_at',
+                        name: 'created_at',
                         searchable: false,
                         sortable: false,
                         width: '10%',
