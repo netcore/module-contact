@@ -16,23 +16,39 @@ class ContactController extends Controller
 {
     /**
      * Display a listing of the resource.
+     *
      * @return Response
      */
     public function index()
     {
-        $items = Item::get();
+        // @TODO we need proper pagination
+        $items = Item::get()->map(function ($item) {
+
+            // Patch posgresql
+            if (is_numeric($item->value)) {
+                $item->load('form');
+            } else {
+                $item->form = null;
+            }
+
+            return $item;
+        });
+
         $content = Content::first();
         $location = Location::first();
 
         $module = Module::find('form');
 
-        if($module && $module->enabled()) {
+        if ($module && $module->enabled()) {
             $forms = Form::all();
             $form = $forms->where('id', contact()->item('contact-form'))->first();
         }
 
-        $config = config('netcore.module-contact');
+        if (!$form) {
+            return redirect()->to('/admin');
+        }
 
+        $config = config('netcore.module-contact');
 
         return view('contact::index', compact('items', 'content', 'location', 'forms', 'config', 'form'));
     }
