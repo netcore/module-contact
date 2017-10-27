@@ -21,7 +21,6 @@ class ContactController extends Controller
      */
     public function index()
     {
-        // @TODO we need proper pagination
         $items = Item::get()->map(function ($item) {
 
             // Patch posgresql
