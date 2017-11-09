@@ -126,9 +126,11 @@
 @endsection
 
 @section('scripts')
-    <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyDoxElWVmbMEV44F4-joUDSZurbhFo1UyE&v=3.exp"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/gmaps.js/0.4.24/gmaps.js"></script>
-    <script src="{{ versionedAsset('/assets/contact/js/contact.js') }}"></script>
+    @if($config['map'])
+        <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyDoxElWVmbMEV44F4-joUDSZurbhFo1UyE&v=3.exp"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/gmaps.js/0.4.24/gmaps.js"></script>
+        <script src="{{ versionedAsset('/assets/contact/js/contact.js') }}"></script>
+    @endif
     <script>
         $(function () {
             //init switcher
