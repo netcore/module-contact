@@ -3,7 +3,7 @@
 @section('content')
     <div class="row">
         @if($config['text-block'])
-            <div class="col-md-6">
+            <div class="@if($config['information']['enabled'])col-md-6 @else  col-md-12 @endif">
                 <div class="panel panel-inverse">
                     <div class="panel-heading">
                         <h4 class="panel-title">Contact page text</h4>
@@ -21,7 +21,7 @@
             </div>
         @endif
         @if($config['information']['enabled'])
-            <div class="col-md-6">
+            <div class="@if($config['text-block'])col-md-6 @else  col-md-12 @endif">
                 <div class="panel panel-inverse">
                     <div class="panel-heading">
                         <h4 class="panel-title">Contact information</h4>
@@ -40,23 +40,44 @@
                                 @if(!$config['information'][$item->type])
                                     @continue
                                 @endif
-                                <tr class="object{{ $item->id }}" data-data="{{ $item->toJson() }}" @if($item->type == 'contact-form' && isset($forms)) data-form_id="{{ $item->value }}" data-forms="{{ $forms }}" @endif>
+                                <tr class="object{{ $item->id }}" data-data="{{ $item->toJson() }}"
+                                    @if($item->type == 'contact-form' && isset($forms)) data-form_id="{{ $item->default_value }}"
+                                    data-forms="{{ $forms }}" @endif>
                                     <td>{{ ucfirst(str_replace('-', ' ', $item->type)) }}</td>
                                     <td class="js-item-value">
                                         @if($item->type == 'workdays')
-                                            <ul>
-                                                @foreach(json_decode($item->value) as $day => $time)
-                                                    <li><b>{{ $day }}</b>: {{ $time }}</li>
-                                                @endforeach
-                                            </ul>
+                                            @foreach(\Netcore\Translator\Helpers\TransHelper::getAllLanguages() as $language)
+                                                <b>{{ strtoupper($language->iso_code) }}</b>
+                                                <ul>
+                                                    @foreach(json_decode(trans_model($item, $language, 'value')) as $day => $time)
+                                                        <li><b>{{ $day }}</b>: {{ $time }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            @endforeach
+
                                         @else
-                                            {{ $item->type == 'contact-form' ? $item->form->name : $item->value }}
+                                            @if($item->type == 'contact-form')
+                                                {{ $item->form->name }}
+                                            @else
+                                                <ul>
+                                                    @foreach(\Netcore\Translator\Helpers\TransHelper::getAllLanguages() as $language)
+                                                        <li><b>{{ strtoupper($language->iso_code) }}:</b> {{ trans_model($item, $language, 'value') }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            @endif
                                         @endif
                                     </td>
                                     <td>
-                                        <button data-id="{{ $item->id }}" class="btn btn-primary edit-item"
-                                                data-toggle="modal" data-target="#edit-item">Edit
-                                        </button>
+                                        @if($item->type == 'contact-form')
+                                            <button data-id="{{ $item->id }}" class="btn btn-primary edit-item"
+                                                    data-toggle="modal" data-target="#edit-item">Edit
+                                            </button>
+                                        @else
+                                            <a href="{{ route('admin::contact.item.edit', $item->id) }}"
+                                               class="btn btn-primary edit-item"
+                                            >Edit
+                                            </a>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
@@ -89,8 +110,9 @@
                 <div class="panel panel-inverse">
                     <div class="panel-heading">
                         <h4 class="panel-title">Contact Form entries
-                            <div class="pull-right"><a href="{{ route('admin::form.edit', contact()->item('contact-form')) }}"
-                                                       class="btn btn-primary">Edit form</a></div>
+                            <div class="pull-right"><a
+                                        href="{{ route('admin::form.edit', contact()->item('contact-form')) }}"
+                                        class="btn btn-primary">Edit form</a></div>
                         </h4>
                     </div>
                     <div class="panel-body">
@@ -154,10 +176,10 @@
                     form.find('.js-contact-form').addClass('hidden');
 
                     var tableBody = form.find('.js-workday-fields table tbody').empty();
-                    $.each(JSON.parse(data.value), function (field, value) {
+                    $.each(JSON.parse(data.default_value), function (field, value) {
                         tableBody.append('<tr><td>' + field + '</td><td><input type="text" value="' + value + '" name="value[]" class="form-control"></td></tr>');
                     })
-                } else if(data.type == 'contact-form') {
+                } else if (data.type == 'contact-form') {
                     form.find('.js-contact-form').removeClass('hidden');
                     form.find('.js-other-fields').addClass('hidden');
                     form.find('.js-workday-fields').addClass('hidden');
@@ -172,7 +194,7 @@
                     $.each(forms, function (index, form) {
                         var formId = form.id;
                         var formName = form.name;
-                        if(currentFormId == formId) {
+                        if (currentFormId == formId) {
                             select.append($('<option value="' + formId + '" selected>' + formName + '</option>'));
                         } else {
                             select.append($('<option value="' + formId + '">' + formName + '</option>'));
@@ -200,11 +222,11 @@
                             $('#edit-item').modal('hide');
                             form[0].reset();
                             var row = $('.item-table').find('.object' + response.data.id + '');
-                            if(response.data.type == 'contact-form') {
+                            if (response.data.type == 'contact-form') {
                                 var forms = JSON.parse(btn.parent().parent().attr('data-forms'));
                                 var formName = '';
                                 $.each(forms, function (index, form) {
-                                    if(form.id == response.data.value) {
+                                    if (form.id == response.data.default_value) {
                                         formName = form.name;
                                     }
                                 });
@@ -212,13 +234,13 @@
                                 row.find('.js-item-value').text(formName);
                             } else if (response.data.type == 'workdays') {
                                 var workdayList = '<ul>';
-                                $.each(JSON.parse(response.data.value), function (day, time) {
+                                $.each(JSON.parse(response.data.default_value), function (day, time) {
                                     workdayList += '<li><b>' + day + '</b>: ' + time + '</li>';
                                 });
                                 workdayList += '</ul>';
                                 row.find('.js-item-value').html(workdayList);
                             } else {
-                                row.find('.js-item-value').text(response.data.value);
+                                row.find('.js-item-value').text(response.data.default_value);
                             }
                             row.attr('data-data', response.json);
 
@@ -245,7 +267,9 @@
 
                 columns: [
                         @foreach ($form->fields as $field)
-                    {data: '{{ $field->key }}', name: '{{ $field->key }}'},
+                    {
+                        data: '{{ $field->key }}', name: '{{ $field->key }}'
+                    },
                         @endforeach
                     {
                         data: 'created_at',

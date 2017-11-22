@@ -18,6 +18,89 @@ return [
         'location'      => true,
         'contact-email' => true,
         'contact-form'  => true
+    ],
+
+    'form-data' => [
+        [
+
+            'key'          => 'name',
+            'type'         => 'text',
+            'meta'         => [
+                'attributes' => ['required'],
+                'options'    => [],
+                'validation' => ['required'],
+            ],
+            'translations' => [
+                'en' => [
+                    'label' => 'Name'
+                ]
+            ]
+
+        ],
+        [
+
+            'key'          => 'email',
+            'type'         => 'text',
+            'meta'         => [
+                'attributes' => ['required'],
+                'options'    => [],
+                'validation' => ['required', 'email'],
+            ],
+            'translations' => [
+                'en' => [
+                    'label' => 'Email'
+                ]
+            ]
+
+        ],
+        [
+
+            'key'          => 'name',
+            'type'         => 'classified',
+            'meta'         => [
+                'attributes' => ['required'],
+                'options'    => [],
+                'validation' => ['required'],
+            ],
+            'translations' => [
+                'en' => [
+                    'label' => 'AD ID'
+                ]
+            ]
+
+        ],
+        [
+
+            'key'          => 'name',
+            'type'         => 'phone',
+            'meta'         => [
+                'attributes' => ['required'],
+                'options'    => [],
+                'validation' => ['required'],
+            ],
+            'translations' => [
+                'en' => [
+                    'label' => 'phone'
+                ]
+            ]
+
+        ],
+        [
+
+            'key'          => 'message',
+            'type'         => 'textarea',
+            'meta'         => [
+                'attributes' => ['required'],
+                'options'    => [],
+                'validation' => ['required'],
+            ],
+            'translations' => [
+                'en' => [
+                    'label' => 'Message'
+                ]
+            ]
+
+        ]
     ]
 ];
 

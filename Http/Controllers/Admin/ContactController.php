@@ -24,7 +24,7 @@ class ContactController extends Controller
         $items = Item::get()->map(function ($item) {
 
             // Patch posgresql
-            if (is_numeric($item->value)) {
+            if (is_numeric($item->default_value)) {
                 $item->load('form');
             } else {
                 $item->form = null;

@@ -19,120 +19,25 @@ class ContactFormTableSeeder extends Seeder
     {
         Model::unguard();
 
-        $fields = [
-            [
-                [
-                    'key'  => 'name',
-                    'type' => 'text',
-                ],
-                [
-                    'key'          => 'name',
-                    'type'         => 'text',
-                    'meta'         => [
-                        'attributes' => ['required'],
-                        'options'    => [],
-                        'validation' => ['required'],
-                    ],
-                    'translations' => [
-                        'en' => [
-                            'label' => 'Name'
-                        ]
-                    ]
-                ],
-            ],
-            [
-                [
-                    'key'  => 'surname',
-                    'type' => 'text',
-                ],
-                [
-                    'key'          => 'surname',
-                    'type'         => 'text',
-                    'meta'         => [
-                        'attributes' => ['required'],
-                        'options'    => [],
-                        'validation' => ['required'],
-                    ],
-                    'translations' => [
-                        'en' => [
-                            'label' => 'Surname'
-                        ]
-                    ]
-                ],
-            ],
-            [
-                [
-                    'key'  => 'company',
-                    'type' => 'text',
-                ],
-                [
-                    'key'          => 'company',
-                    'type'         => 'text',
-                    'translations' => [
-                        'en' => [
-                            'label' => 'Company / Organization'
-                        ]
-                    ]
-                ],
-            ],
-            [
-                [
-                    'key'  => 'email',
-                    'type' => 'text',
-                ],
-                [
-                    'key'          => 'email',
-                    'type'         => 'text',
-                    'meta'         => [
-                        'attributes' => ['required'],
-                        'options'    => [],
-                        'validation' => ['required', 'email'],
-                    ],
-                    'translations' => [
-                        'en' => [
-                            'label' => 'Email'
-                        ]
-                    ]
-                ],
-            ],
-            [
-                [
-                    'key'  => 'message',
-                    'type' => 'textarea',
-                ],
-                [
-                    'key'          => 'message',
-                    'type'         => 'textarea',
-                    'meta'         => [
-                        'attributes' => ['required'],
-                        'options'    => [],
-                        'validation' => ['required'],
-                    ],
-                    'translations' => [
-                        'en' => [
-                            'label' => 'Message'
-                        ]
-                    ]
-                ],
-            ]
-        ];
+        $fields = config('netcore.module-contact.form-data');
 
         $form = Form::firstOrCreate([
             'key'  => 'contact-us',
             'name' => 'Contact us',
         ]);
 
-        $i = 1;
-        foreach ($fields as $i => $field) {
-            $f = $field[1];
-            $f['order'] = $i + 1;
-            $formField = $form->fields()->firstOrCreate($field[0], array_except($f, 'translations'));
-            $formField->storeTranslations($f['translations']);
+        $i = 0;
+        foreach ($fields as $field) {
+            $field['order'] = $i + 1;
+            $formField = $form->fields()->firstOrCreate(array_only($field, ['key', 'type']), array_except($field, 'translations'));
+
+            $formField->storeTranslations($field['translations']);
         }
 
         Item::firstOrCreate([
-            'type'  => 'contact-form',
-            'value' => $form->id
+            'type'             => 'contact-form',
+            'default_value'    => $form->id,
+            'is_translateable' => 0
         ]);
     }
 }

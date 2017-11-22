@@ -3,7 +3,6 @@
 namespace Modules\Contact\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Contact\Http\Requests\ItemRequest;
 use Modules\Contact\Models\Item;
@@ -11,6 +10,28 @@ use Modules\Contact\Models\Item;
 class ContactItemController extends Controller
 {
 
+    /**
+     * @param Item $item
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function edit(Item $item)
+    {
+        return view('contact::item.edit', compact('item'));
+    }
+
+    /**
+     * @param Request $request
+     * @param Item $item
+     * @return mixed
+     */
+    public function updateItem(Request $request, Item $item)
+    {
+        $item->updateTranslations(
+            $request->input('translations', [])
+        );
+
+        return redirect()->back()->withSuccess('Item successfully edited!');
+    }
 
     /**
      * Update the specified resource in storage.
@@ -25,9 +46,9 @@ class ContactItemController extends Controller
         }
 
         if ($item->type != 'workdays') {
-            $item->value = $request->get('value');
+            $item->default_value = $request->get('value');
         } else {
-            $workdays = collect(json_decode($item->value))->toArray();
+            $workdays = collect(json_decode($item->default_value))->toArray();
 
             $newWorkDays = [];
             $i = 0;
