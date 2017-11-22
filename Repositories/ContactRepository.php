@@ -62,8 +62,13 @@ class ContactRepository
 
         $item = Item::whereType($key)->first();
 
+
         if ($item) {
-            return $item->value;
+            if ($key == 'contact-form') {
+                return $item->default_value;
+            } else {
+                return $item->value;
+            }
         }
 
         return null;
@@ -72,7 +77,8 @@ class ContactRepository
     /**
      * @return string
      */
-    public function content()
+    public
+    function content()
     {
         if (!$this->config['text-block']) {
             return 'Getting text is disabled';
