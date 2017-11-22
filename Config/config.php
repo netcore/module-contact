@@ -22,7 +22,6 @@ return [
 
     'form-data' => [
         [
-
             'key'          => 'name',
             'type'         => 'text',
             'meta'         => [
@@ -35,10 +34,8 @@ return [
                     'label' => 'Name'
                 ]
             ]
-
         ],
         [
-
             'key'          => 'email',
             'type'         => 'text',
             'meta'         => [
@@ -51,12 +48,10 @@ return [
                     'label' => 'Email'
                 ]
             ]
-
         ],
         [
-
-            'key'          => 'name',
-            'type'         => 'classified',
+            'key'          => 'ad_id',
+            'type'         => 'text',
             'meta'         => [
                 'attributes' => ['required'],
                 'options'    => [],
@@ -67,12 +62,10 @@ return [
                     'label' => 'AD ID'
                 ]
             ]
-
         ],
         [
-
-            'key'          => 'name',
-            'type'         => 'phone',
+            'key'          => 'phone',
+            'type'         => 'text',
             'meta'         => [
                 'attributes' => ['required'],
                 'options'    => [],
@@ -80,13 +73,11 @@ return [
             ],
             'translations' => [
                 'en' => [
-                    'label' => 'phone'
+                    'label' => 'Phone'
                 ]
             ]
-
         ],
         [
-
             'key'          => 'message',
             'type'         => 'textarea',
             'meta'         => [
@@ -99,8 +90,6 @@ return [
                     'label' => 'Message'
                 ]
             ]
-
         ]
     ]
 ];
-
