@@ -1,7 +1,13 @@
 @extends('admin::layouts.master')
+
 @section('content')
     <div class="panel panel-inverse">
         <div class="panel-heading">
+            <div class="panel-heading-btn">
+                <a href="{{ route('admin::contact.index') }}" class="btn btn-xs btn-primary">
+                    <i class="fa fa-undo"></i> Back to list
+                </a>
+            </div>
             <h4 class="panel-title">Edit item - {{ $item->type }}</h4>
         </div>
 
@@ -13,7 +19,8 @@
 
             <div class="tab-content">
                 @foreach(\Netcore\Translator\Helpers\TransHelper::getAllLanguages() as $language)
-                    <div role="tabpanel" class="tab-pane {{ $loop->first ? 'active' : '' }}" id="{{ $language->iso_code }}">
+                    <div role="tabpanel" class="tab-pane {{ $loop->first ? 'active' : '' }}"
+                         id="{{ $language->iso_code }}">
 
                         <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
                             <label class="col-md-2 control-label">Value</label>
@@ -25,11 +32,9 @@
                 @endforeach
             </div>
 
-
-            <div class="panel-footer text-right">
-                {{ Form::submit('Save', ['class' => 'btn btn-primary']) }}
-            </div>
-            {{ Form::close() }}
+            <button type="submit" class="btn btn-success btn-md pull-right"><i class="fa fa-save"></i> Save</button>
         </div>
+        {{ Form::close() }}
+    </div>
     </div>
 @endsection
