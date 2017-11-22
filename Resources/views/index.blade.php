@@ -11,9 +11,12 @@
                     <div class="panel-body">
                         @include('admin::_partials._messages')
                         {{ Form::open(['route' => 'admin::contact.content.update', 'method' => 'put']) }}
-                        {{ Form::textarea('text', $content->text, ['class' => 'form-control summernote-with-filemanager']) }}
+                        <div class="form-group">
+                            {{ Form::textarea('text', $content->text, ['class' => 'form-control summernote-with-filemanager']) }}
+                        </div>
                         <div class="pull-right">
-                            {{ Form::submit('Save', ['class' => 'btn btn-success']) }}
+                            <button type="submit" class="btn btn-success btn-md"><i class="fa fa-save"></i> Save
+                            </button>
                         </div>
                         {{ Form::close() }}
                     </div>
@@ -32,7 +35,7 @@
                             <tr>
                                 <th>Type</th>
                                 <th>Value</th>
-                                <th>Action</th>
+                                <th class="text-center">Actions</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -61,21 +64,24 @@
                                             @else
                                                 <ul>
                                                     @foreach(\Netcore\Translator\Helpers\TransHelper::getAllLanguages() as $language)
-                                                        <li><b>{{ strtoupper($language->iso_code) }}:</b> {{ trans_model($item, $language, 'value') }}</li>
+                                                        <li><b>{{ strtoupper($language->iso_code) }}
+                                                                :</b> {{ trans_model($item, $language, 'value') }}</li>
                                                     @endforeach
                                                 </ul>
                                             @endif
                                         @endif
                                     </td>
-                                    <td>
+                                    <td width="10%" class="text-center">
                                         @if($item->type == 'contact-form')
-                                            <button data-id="{{ $item->id }}" class="btn btn-primary edit-item"
-                                                    data-toggle="modal" data-target="#edit-item">Edit
+                                            <button data-id="{{ $item->id }}" class="btn btn-primary btn-sm edit-item"
+                                                    data-toggle="modal" data-target="#edit-item"><i
+                                                        class="fa fa-edit"></i> Edit
                                             </button>
                                         @else
                                             <a href="{{ route('admin::contact.item.edit', $item->id) }}"
-                                               class="btn btn-primary edit-item"
-                                            >Edit
+                                               class="btn btn-primary btn-sm edit-item"
+                                            >
+                                                <i class="fa fa-edit"></i> Edit
                                             </a>
                                         @endif
                                     </td>
@@ -110,25 +116,28 @@
                 <div class="panel panel-inverse">
                     <div class="panel-heading">
                         <h4 class="panel-title">Contact Form entries
-                            <div class="pull-right"><a
-                                        href="{{ route('admin::form.edit', contact()->item('contact-form')) }}"
-                                        class="btn btn-primary">Edit form</a></div>
+                            <div class="pull-right">
+                                <a href="{{ route('admin::form.edit', contact()->item('contact-form')) }}"
+                                   class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> Edit form</a>
+                            </div>
                         </h4>
                     </div>
                     <div class="panel-body">
-                        <table class="table table-bordered" id="datatable">
-                            <thead>
-                            <tr>
-                                @foreach ($form->fields as $field)
-                                    <th>{{ $field->label }}</th>
-                                @endforeach
-                                <th>Submitted At</th>
-                                <th class="text-center">Actions</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
+                        <div class="table-primary">
+                            <table class="table table-bordered" id="datatable">
+                                <thead>
+                                <tr>
+                                    @foreach ($form->fields as $field)
+                                        <th>{{ $field->label }}</th>
+                                    @endforeach
+                                    <th>Submitted At</th>
+                                    <th class="text-center">Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
