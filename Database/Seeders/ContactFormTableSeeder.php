@@ -23,12 +23,19 @@ class ContactFormTableSeeder extends Seeder
 
         $form = Form::firstOrCreate([
             'key'  => 'contact-us',
-            'name' => 'Contact us',
         ]);
 
-        $i = 0;
-        foreach ($fields as $field) {
-            $field['order'] = $i + 1;
+        $translations = [];
+        foreach (\Netcore\Translator\Helpers\TransHelper::getAllLanguages() as $language) {
+            $translations[$language->iso_code] = [
+                'name'            => 'Contact us',
+                'success_message' => 'Your message was successfully submitted!'
+            ];
+        }
+        $form->updateTranslations($translations);
+
+        foreach ($fields as $order => $field) {
+            $field['order'] = $order + 1;
             $formField = $form->fields()->firstOrCreate(array_only($field, ['key', 'type']), array_except($field, 'translations'));
 
             $formField->storeTranslations($field['translations']);
