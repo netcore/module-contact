@@ -15,6 +15,16 @@ class CreateNetcoreContactLocationsTable extends Migration
     {
         Schema::create('netcore_contact__locations', function (Blueprint $table) {
             $table->increments('id');
+            $table->boolean('is_active');
+            $table->timestamps();
+        });
+
+        Schema::create('netcore_contact__location_translations', function (Blueprint $table) {
+            $table->increments('id');
+
+            $table->unsignedInteger('location_id');
+            $table->foreign('location_id', 'location_id')->references('id')->on('netcore_contact__locations')->onDelete('cascade');
+
             $table->string('address_full');
             $table->string('address_short');
             $table->string('country');
@@ -22,7 +32,8 @@ class CreateNetcoreContactLocationsTable extends Migration
             $table->string('zip_code');
             $table->string('lat');
             $table->string('lng');
-            $table->timestamps();
+
+            $table->string('locale')->index();
         });
     }
 
@@ -33,6 +44,7 @@ class CreateNetcoreContactLocationsTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('netcore_contact__location_translations');
         Schema::dropIfExists('netcore_contact__locations');
     }
 }

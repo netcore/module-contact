@@ -74,7 +74,7 @@ class ContactController extends Controller
     {
         $location = Location::first();
 
-        $location->update($request->all());
+        $location->updateTranslations($request->only('translations', []));
 
         return redirect()->back()->withSuccess('Location data successfully updated!');
     }

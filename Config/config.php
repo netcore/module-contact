@@ -91,5 +91,17 @@ return [
                 ]
             ]
         ]
+    ],
+
+    'location-data' => [
+        'en' => [
+            'lat'           => '56.5130713',
+            'lng'           => '27.3348303',
+            'address_full'  => 'Atbrīvošanas aleja, Rēzekne',
+            'address_short' => 'Atbrīvošanas aleja',
+            'country'       => 'Latvia',
+            'city'          => 'Rēzekne',
+            'zip_code'      => 'LV4601',
+        ]
     ]
 ];

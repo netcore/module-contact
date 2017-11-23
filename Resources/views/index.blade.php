@@ -153,152 +153,96 @@
             width: 100%;
             height: 195px;
         }
+
+        .gm-style img{max-height:none;}
+        .map {
+            height: 100%;
+            width: 100%;
+            margin: 0px;
+            padding: 0px
+        }
     </style>
+    <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyDoxElWVmbMEV44F4-joUDSZurbhFo1UyE&v=3.exp"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/gmaps.js/0.4.24/gmaps.js"></script>
+
 @endsection
 
 @section('scripts')
     @if($config['map'])
-        <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyDoxElWVmbMEV44F4-joUDSZurbhFo1UyE&v=3.exp"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/gmaps.js/0.4.24/gmaps.js"></script>
         <script src="{{ versionedAsset('/assets/contact/js/contact.js') }}"></script>
     @endif
     <script>
-        $(function () {
-            //init switcher
-            $('.single-entries-changeable-state').each(function (i, switcher) {
-                new Switchery(switcher);
-            });
+        @foreach(\Netcore\Translator\Helpers\TransHelper::getAllLanguages() as $language)
+        var latLong_{{ $language->iso_code }};
+        var map_{{ $language->iso_code }};
+        var geocoder_{{ $language->iso_code }};
 
-            $('.edit-item').on('click', function () {
-                var btn = $(this);
-                var form = $('.js-edit-field');
-                var data = JSON.parse(btn.parent().parent().attr('data-data'));
-                var dangerAlert = form.find('.alert-danger');
+        @endforeach
+        $(window).on('load', function(){
+            @foreach(\Netcore\Translator\Helpers\TransHelper::getAllLanguages() as $language)
+                geocoder_{{ $language->iso_code }} = new google.maps.Geocoder();
+                var locale = '{{ $language->iso_code }}';
+                var map_lat = $('input[name="translations[' + locale + '][lat]"]').val();
+                var map_lng = $('input[name="translations[' + locale + '][lng]"]').val();
+
+                latLong_{{ $language->iso_code }} = new google.maps.LatLng(map_lat, map_lng);
+                map_{{ $language->iso_code }} = new google.maps.Map(document.getElementById('contact-map-' + locale), {
+                    center: latLong_{{ $language->iso_code }},
+                    zoom: 12
+                });
+                markers_{{ $language->iso_code }} = {};
 
 
-                form.find('[name="item_id"]').val(data.id);
-                form.find('[name="type"]').val(data.type);
+                markers_{{ $language->iso_code }}[latLong_{{ $language->iso_code }}] = new google.maps.Marker({
+                    position: latLong_{{ $language->iso_code }},
+                    map: map_{{ $language->iso_code }}
+                });
 
-                if (data.type == 'workdays') {
-                    form.find('.js-workday-fields').removeClass('hidden');
-                    form.find('.js-other-fields').addClass('hidden');
-                    form.find('.js-contact-form').addClass('hidden');
-
-                    var tableBody = form.find('.js-workday-fields table tbody').empty();
-                    $.each(JSON.parse(data.default_value), function (field, value) {
-                        tableBody.append('<tr><td>' + field + '</td><td><input type="text" value="' + value + '" name="value[]" class="form-control"></td></tr>');
-                    })
-                } else if (data.type == 'contact-form') {
-                    form.find('.js-contact-form').removeClass('hidden');
-                    form.find('.js-other-fields').addClass('hidden');
-                    form.find('.js-workday-fields').addClass('hidden');
-
-                    var currentFormId = JSON.parse(btn.parent().parent().attr('data-form_id'));
-                    var forms = JSON.parse(btn.parent().parent().attr('data-forms'));
-                    var formList = [];
-
-                    var select = $('.js-contact-form select');
-                    select.empty();
-
-                    $.each(forms, function (index, form) {
-                        var formId = form.id;
-                        var formName = form.name;
-                        if (currentFormId == formId) {
-                            select.append($('<option value="' + formId + '" selected>' + formName + '</option>'));
-                        } else {
-                            select.append($('<option value="' + formId + '">' + formName + '</option>'));
-                        }
-                    });
-
-                    console.log(formList);
-                } else {
-                    form.find('[name="value"]').val(data.value);
-                    form.find('.js-workday-fields').addClass('hidden');
-                    form.find('.js-other-fields').removeClass('hidden');
-                    form.find('.js-contact-form').addClass('hidden');
-
-                }
-
-                form.on('submit', function (e) {
-                    e.preventDefault();
-                    var formData = form.serializeArray();
-
-                    $.ajax({
-                        type: 'post',
-                        url: form.attr('action'),
-                        data: formData,
-                        success: function (response) {
-                            $('#edit-item').modal('hide');
-                            form[0].reset();
-                            var row = $('.item-table').find('.object' + response.data.id + '');
-                            if (response.data.type == 'contact-form') {
-                                var forms = JSON.parse(btn.parent().parent().attr('data-forms'));
-                                var formName = '';
-                                $.each(forms, function (index, form) {
-                                    if (form.id == response.data.default_value) {
-                                        formName = form.name;
-                                    }
-                                });
-
-                                row.find('.js-item-value').text(formName);
-                            } else if (response.data.type == 'workdays') {
-                                var workdayList = '<ul>';
-                                $.each(JSON.parse(response.data.default_value), function (day, time) {
-                                    workdayList += '<li><b>' + day + '</b>: ' + time + '</li>';
-                                });
-                                workdayList += '</ul>';
-                                row.find('.js-item-value').html(workdayList);
-                            } else {
-                                row.find('.js-item-value').text(response.data.default_value);
-                            }
-                            row.attr('data-data', response.json);
-
-                        },
-                        error: function (response) {
-                            var errors = response.responseJSON.errors;
-                            var errorList = '';
-                            $.each(errors, function (field, error) {
-                                console.log(error);
-                                errorList += '<li>' + error[0] + '</li>'
-                            });
-                            dangerAlert.hide().removeClass('hidden').html(errorList).fadeIn();
-                            form.find('input[type="submit"]').prop('disabled', false);
-                        }
-                    });
-                })
-            });
-
-            $('#datatable').DataTable({
-                responsive: true,
-                serverSide: true,
-                processing: true,
-                ajax: '{{ route('admin::form.entries.pagination', $form->id) }}',
-
-                columns: [
-                        @foreach ($form->fields as $field)
-                    {
-                        data: '{{ $field->key }}', name: '{{ $field->key }}'
-                    },
-                        @endforeach
-                    {
-                        data: 'created_at',
-                        name: 'created_at',
-                        searchable: false,
-                        sortable: false,
-                        width: '10%',
-                        className: 'text-center'
-                    },
-                    {
-                        data: 'actions',
-                        name: 'actions',
-                        searchable: false,
-                        sortable: false,
-                        width: '10%',
-                        className: 'text-center'
-                    }
-                ]
-
-            })
+            @endforeach
         });
-    </script>
-@endsection
+
+        $(function () {
+            @foreach(\Netcore\Translator\Helpers\TransHelper::getAllLanguages() as $language)
+            $('[href="#map-{{ $language->iso_code }}"]').click(function () {
+                setTimeout(function () {
+                    google.maps.event.trigger(map_{{ $language->iso_code }}, 'resize');
+                    console.log(latLong_{{ $language->iso_code }});
+                    map_{{ $language->iso_code }}.setCenter(latLong_{{ $language->iso_code }});
+                }, 500);
+            });
+            @endforeach
+
+           $('#datatable').DataTable({
+               responsive: true,
+               serverSide: true,
+               processing: true,
+               ajax: '{{ route('admin::form.entries.pagination', $form->id) }}',
+
+               columns: [
+                       @foreach ($form->fields as $field)
+                   {
+                       data: '{{ $field->key }}', name: '{{ $field->key }}'
+                   },
+                       @endforeach
+                   {
+                       data: 'created_at',
+                       name: 'created_at',
+                       searchable: false,
+                       sortable: false,
+                       width: '10%',
+                       className: 'text-center'
+                   },
+                   {
+                       data: 'actions',
+                       name: 'actions',
+                       searchable: false,
+                       sortable: false,
+                       width: '10%',
+                       className: 'text-center'
+                   }
+               ]
+
+           });
+        });
+       </script>
+   @endsection
