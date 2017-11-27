@@ -162,7 +162,7 @@
             padding: 0px
         }
     </style>
-    <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyDoxElWVmbMEV44F4-joUDSZurbhFo1UyE&v=3.exp"></script>
+    <script src="//maps.googleapis.com/maps/api/js?key={{ contact()->item('maps_api_key') }}&v=3.exp"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/gmaps.js/0.4.24/gmaps.js"></script>
 
 @endsection

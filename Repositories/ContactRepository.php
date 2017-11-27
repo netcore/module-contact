@@ -42,6 +42,10 @@ class ContactRepository
             return 'Getting information is disabled';
         }
 
+        if($key == 'maps_api_key') {
+            return config('netcore.module-contact.maps_api_key');
+        }
+
         $items = array_except($this->config['information'], 'enabled');
         $disabledItems = [];
         foreach ($items as $item => $state) {
