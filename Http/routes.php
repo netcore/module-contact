@@ -11,6 +11,16 @@ Route::group([
         'as'   => 'index'
     ]);
 
+    Route::get('/item/{item}/edit', [
+        'uses' => 'ContactItemController@edit',
+        'as'   => 'item.edit'
+    ]);
+
+    Route::put('/item/{item}/update', [
+        'uses' => 'ContactItemController@updateItem',
+        'as'   => 'custom.item.update'
+    ]);
+
     Route::put('/item/update', [
         'uses' => 'ContactItemController@update',
         'as'   => 'item.update'
