@@ -18,20 +18,10 @@ class LocationsTableSeeder extends Seeder
     {
         Model::unguard();
 
-        $locations = [
-            [
-                'lat'      => '56.5130713',
-                'lng'      => '27.3348303',
-                'address_full'  => 'Atbrīvošanas aleja, Rēzekne',
-                'address_short'  => 'Atbrīvošanas aleja',
-                'country'  => 'Latvia',
-                'city'     => 'Rēzekne',
-                'zip_code' => 'LV4601',
-            ]
-        ];
-
-        foreach($locations as $location) {
-            Location::firstOrCreate($location);
+        $locations = config('netcore.module-contact.location-data');
+        $l = Location::create(['is_active' => 1]);
+        foreach($locations as $isoCode => $location) {
+            $l->storeTranslations([$isoCode => $location]);
         }
     }
 }

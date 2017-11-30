@@ -42,6 +42,10 @@ class ContactRepository
             return 'Getting information is disabled';
         }
 
+        if($key == 'maps_api_key') {
+            return config('netcore.module-contact.maps_api_key');
+        }
+
         $items = array_except($this->config['information'], 'enabled');
         $disabledItems = [];
         foreach ($items as $item => $state) {
@@ -62,8 +66,13 @@ class ContactRepository
 
         $item = Item::whereType($key)->first();
 
+
         if ($item) {
-            return $item->value;
+            if ($key == 'contact-form') {
+                return $item->default_value;
+            } else {
+                return $item->value;
+            }
         }
 
         return null;
@@ -72,7 +81,8 @@ class ContactRepository
     /**
      * @return string
      */
-    public function content()
+    public
+    function content()
     {
         if (!$this->config['text-block']) {
             return 'Getting text is disabled';
