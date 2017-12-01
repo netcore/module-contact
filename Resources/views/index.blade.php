@@ -148,23 +148,27 @@
 @endsection
 
 @section('styles')
-    <style>
-        .map {
-            width: 100%;
-            height: 195px;
-        }
+    @if($config['map'])
+        <style>
+            .map {
+                width: 100%;
+                height: 195px;
+            }
 
-        .gm-style img{max-height:none;}
-        .map {
-            height: 100%;
-            width: 100%;
-            margin: 0px;
-            padding: 0px
-        }
-    </style>
-    <script src="//maps.googleapis.com/maps/api/js?key={{ contact()->item('maps_api_key') }}&v=3.exp"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/gmaps.js/0.4.24/gmaps.js"></script>
+            .gm-style img {
+                max-height: none;
+            }
 
+            .map {
+                height: 100%;
+                width: 100%;
+                margin: 0px;
+                padding: 0px
+            }
+        </style>
+        <script src="//maps.googleapis.com/maps/api/js?key={{ contact()->item('maps_api_key') }}&v=3.exp"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/gmaps.js/0.4.24/gmaps.js"></script>
+    @endif
 @endsection
 
 @section('scripts')
@@ -172,36 +176,39 @@
         <script src="{{ versionedAsset('/assets/contact/js/contact.js') }}"></script>
     @endif
     <script>
-        @foreach(\Netcore\Translator\Helpers\TransHelper::getAllLanguages() as $language)
+                @if($config['map'])
+                @foreach(\Netcore\Translator\Helpers\TransHelper::getAllLanguages() as $language)
         var latLong_{{ $language->iso_code }};
         var map_{{ $language->iso_code }};
         var geocoder_{{ $language->iso_code }};
 
         @endforeach
-        $(window).on('load', function(){
+        $(window).on('load', function () {
             @foreach(\Netcore\Translator\Helpers\TransHelper::getAllLanguages() as $language)
                 geocoder_{{ $language->iso_code }} = new google.maps.Geocoder();
-                var locale = '{{ $language->iso_code }}';
-                var map_lat = $('input[name="translations[' + locale + '][lat]"]').val();
-                var map_lng = $('input[name="translations[' + locale + '][lng]"]').val();
+            var locale = '{{ $language->iso_code }}';
+            var map_lat = $('input[name="translations[' + locale + '][lat]"]').val();
+            var map_lng = $('input[name="translations[' + locale + '][lng]"]').val();
 
-                latLong_{{ $language->iso_code }} = new google.maps.LatLng(map_lat, map_lng);
-                map_{{ $language->iso_code }} = new google.maps.Map(document.getElementById('contact-map-' + locale), {
-                    center: latLong_{{ $language->iso_code }},
-                    zoom: 12
-                });
-                markers_{{ $language->iso_code }} = {};
+            latLong_{{ $language->iso_code }} = new google.maps.LatLng(map_lat, map_lng);
+            map_{{ $language->iso_code }} = new google.maps.Map(document.getElementById('contact-map-' + locale), {
+                center: latLong_{{ $language->iso_code }},
+                zoom: 12
+            });
+            markers_{{ $language->iso_code }} = {};
 
 
-                markers_{{ $language->iso_code }}[latLong_{{ $language->iso_code }}] = new google.maps.Marker({
-                    position: latLong_{{ $language->iso_code }},
-                    map: map_{{ $language->iso_code }}
-                });
+            markers_{{ $language->iso_code }}[latLong_{{ $language->iso_code }}] = new google.maps.Marker({
+                position: latLong_{{ $language->iso_code }},
+                map: map_{{ $language->iso_code }}
+            });
 
             @endforeach
         });
+        @endif
 
         $(function () {
+            @if($config['map'])
             @foreach(\Netcore\Translator\Helpers\TransHelper::getAllLanguages() as $language)
             $('[href="#map-{{ $language->iso_code }}"]').click(function () {
                 setTimeout(function () {
@@ -211,38 +218,39 @@
                 }, 500);
             });
             @endforeach
+            @endif
 
-           $('#datatable').DataTable({
-               responsive: true,
-               serverSide: true,
-               processing: true,
-               ajax: '{{ route('admin::form.entries.pagination', $form->id) }}',
+            $('#datatable').DataTable({
+                responsive: true,
+                serverSide: true,
+                processing: true,
+                ajax: '{{ route('admin::form.entries.pagination', $form->id) }}',
 
-               columns: [
-                       @foreach ($form->fields as $field)
-                   {
-                       data: '{{ $field->key }}', name: '{{ $field->key }}'
-                   },
-                       @endforeach
-                   {
-                       data: 'created_at',
-                       name: 'created_at',
-                       searchable: false,
-                       sortable: false,
-                       width: '10%',
-                       className: 'text-center'
-                   },
-                   {
-                       data: 'actions',
-                       name: 'actions',
-                       searchable: false,
-                       sortable: false,
-                       width: '10%',
-                       className: 'text-center'
-                   }
-               ]
+                columns: [
+                        @foreach ($form->fields as $field)
+                    {
+                        data: '{{ $field->key }}', name: '{{ $field->key }}'
+                    },
+                        @endforeach
+                    {
+                        data: 'created_at',
+                        name: 'created_at',
+                        searchable: false,
+                        sortable: false,
+                        width: '10%',
+                        className: 'text-center'
+                    },
+                    {
+                        data: 'actions',
+                        name: 'actions',
+                        searchable: false,
+                        sortable: false,
+                        width: '10%',
+                        className: 'text-center'
+                    }
+                ]
 
-           });
+            });
         });
-       </script>
-   @endsection
+    </script>
+@endsection
