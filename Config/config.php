@@ -1,6 +1,10 @@
 <?php
 
 return [
+
+    // Items cache key
+    'items_cache_key' => 'contact_items',
+
     // some projects don't have text-block, that's why we can disable it
     'text-block'   => true,
 

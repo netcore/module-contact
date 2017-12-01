@@ -2,9 +2,9 @@
 
 namespace Modules\Contact\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Contact\Http\Requests\ItemRequest;
+use Modules\Contact\Http\Requests\ItemUpdateRequest;
 use Modules\Contact\Models\Item;
 
 class ContactItemController extends Controller
@@ -20,21 +20,22 @@ class ContactItemController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @param Item $item
+     * @param ItemUpdateRequest $request
+     * @param Item              $item
      * @return mixed
      */
-    public function updateItem(Request $request, Item $item)
+    public function updateItem(ItemUpdateRequest $request, Item $item)
     {
-        $item->updateTranslations(
-            $request->input('translations', [])
-        );
+        $item->updateTranslations($request->get('translations', []));
+
+        contact()->clear_cache();
 
         return redirect()->back()->withSuccess('Item successfully edited!');
     }
 
     /**
      * Update the specified resource in storage.
+     *
      * @param ItemRequest $request
      * @return array
      */
@@ -59,7 +60,6 @@ class ContactItemController extends Controller
             $item->value = json_encode($newWorkDays);
         }
         $item->save();
-
 
         return [
             'data' => $item,
