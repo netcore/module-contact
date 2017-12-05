@@ -35,11 +35,9 @@ class ContactServiceProvider extends ServiceProvider
 
         $module = Module::find('form');
 
-        if ($module && $module->enabled()) {
+        if ($module && $module->enabled() && config('netcore.module-contact.notify.enabled')) {
             FormsRepository::addNewEvent('contact-us', function ($data) {
-                Mail::to(contact()->item('contact-email'))->queue(
-                    new NotifyAboutContactMessage($data)
-                );
+                Mail::to(contact()->item('contact-email'))->queue(new NotifyAboutContactMessage($data));
             });
         }
     }
@@ -66,9 +64,7 @@ class ContactServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../Config/config.php' => config_path('netcore/module-contact.php'),
         ], 'config');
-        $this->mergeConfigFrom(
-            __DIR__ . '/../Config/config.php', 'contact'
-        );
+        $this->mergeConfigFrom(__DIR__ . '/../Config/config.php', 'contact');
     }
 
     /**
@@ -88,7 +84,7 @@ class ContactServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(array_merge(array_map(function ($path) {
             return $path . '/modules/contact';
-        }, \Config::get('view.paths')), [$sourcePath]), 'contact');
+        }, config('view.paths')), [$sourcePath]), 'contact');
     }
 
     /**
