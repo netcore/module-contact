@@ -11,16 +11,25 @@ class NotifyAboutContactMessage extends Mailable
 {
     use Queueable, SerializesModels;
 
-
+    /**
+     * @var
+     */
     private $data;
+
+    /**
+     * @var \Illuminate\Config\Repository|mixed
+     */
+    private $config;
 
     /**
      * Create a new message instance.
      *
+     * @param $data
      */
     public function __construct($data)
     {
         $this->data = $data;
+        $this->config = config('netcore.module-contact');
     }
 
     /**
@@ -30,11 +39,10 @@ class NotifyAboutContactMessage extends Mailable
      */
     public function build()
     {
-        $data = $this->data;
+        $template = $this->config['notify']['email_template'] ?: 'contact::emails.contact-notification';
+        $this->subject($this->config['notify']['email_subject']);
+        $this->from($this->data['email'], array_get($this->data, 'name'));
 
-        $this->subject('New contact message');
-        $this->from($data['email'], array_get($data, 'name') . ' ' . array_get($data, 'name'));
-
-        return $this->view('contact::emails.contact-notification', compact('data'));
+        return $this->view($template, compact('data'));
     }
 }
