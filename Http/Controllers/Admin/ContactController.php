@@ -21,6 +21,7 @@ class ContactController extends Controller
      */
     public function index()
     {
+        $config = config('netcore.module-contact');
         $items = Item::get()->map(function ($item) {
 
             // Patch posgresql
@@ -35,19 +36,16 @@ class ContactController extends Controller
 
         $content = Content::first();
         $location = Location::first();
+        $forms = [];
+        $form = null;
 
-        $module = Module::find('form');
-
-        if ($module && $module->enabled()) {
-            $forms = Form::all();
-            $form = $forms->where('id', contact()->item('contact-form'))->first();
+        if ($config['information']['contact-form']) {
+            $module = Module::find('form');
+            if ($module && $module->enabled()) {
+                $forms = Form::all();
+                $form = $forms->where('id', contact()->item('contact-form'))->first();
+            }
         }
-
-        if (!$form) {
-            return redirect()->to('/admin');
-        }
-
-        $config = config('netcore.module-contact');
 
         return view('contact::index', compact('items', 'content', 'location', 'forms', 'config', 'form'));
     }
@@ -73,7 +71,6 @@ class ContactController extends Controller
     public function updateMap(LocationsRequest $request)
     {
         $location = Location::first();
-
         $location->updateTranslations($request->only('translations', []));
 
         return redirect()->back()->withSuccess('Location data successfully updated!');
