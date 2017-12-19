@@ -110,7 +110,7 @@
         </div>
     @endif
 
-    @if($config['information']['contact-form'])
+    @if($config['information']['contact-form'] && $form)
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-inverse">
@@ -220,6 +220,7 @@
             @endforeach
             @endif
 
+            @if($config['information']['contact-form'] && $form)
             $('#datatable').DataTable({
                 responsive: true,
                 serverSide: true,
@@ -251,6 +252,7 @@
                 ]
 
             });
+            @endif
         });
     </script>
 @endsection
