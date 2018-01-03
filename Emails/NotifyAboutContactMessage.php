@@ -14,7 +14,7 @@ class NotifyAboutContactMessage extends Mailable
     /**
      * @var
      */
-    private $data;
+    public $data;
 
     /**
      * @var \Illuminate\Config\Repository|mixed
