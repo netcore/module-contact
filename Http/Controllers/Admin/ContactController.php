@@ -65,13 +65,15 @@ class ContactController extends Controller
     }
 
     /**
-     * @param LocationsRequest $request
+     * @param Request $request
      * @return mixed
      */
-    public function updateMap(LocationsRequest $request)
+    public function updateMap(Request $request)
     {
-        $location = Location::first();
-        $location->updateTranslations($request->only('translations', []));
+        $location = Location::find(1);
+        $location->updateTranslations(
+            $request->input('translations', [])
+        );
 
         return redirect()->back()->withSuccess('Location data successfully updated!');
     }
