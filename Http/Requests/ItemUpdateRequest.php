@@ -25,13 +25,7 @@ class ItemUpdateRequest extends FormRequest
      */
     public function rules()
     {
-        $rules = [];
-
-        foreach (TransHelper::getAllLanguages() as $language) {
-            $rules['translations.' . $language->iso_code . '.value'] = 'required';
-        }
-
-        return $rules;
+        return [];
     }
 
     /**
@@ -41,12 +35,6 @@ class ItemUpdateRequest extends FormRequest
      */
     public function messages()
     {
-        $messages = [];
-
-        foreach (TransHelper::getAllLanguages() as $language) {
-            $messages['translations.' . $language->iso_code . '.value.required'] = 'Value (' . strtoupper($language->iso_code) . ') is required.';
-        }
-
-        return $messages;
+        return [];
     }
 }

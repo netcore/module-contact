@@ -26,7 +26,24 @@ class ContactItemController extends Controller
      */
     public function updateItem(ItemUpdateRequest $request, Item $item)
     {
-        $item->updateTranslations($request->get('translations', []));
+        $translations = $request->get('translations', []);
+
+        if ($item->type === 'workdays') {
+            $array = [];
+            $workDays = [];
+
+            foreach ($translations as $locale => $translation) {
+                foreach ($translation as $key => $value) {
+                    $workDays[$key] = $value;
+                }
+
+                $array[$locale]['value'] = json_encode($workDays);
+            }
+
+            $translations = $array;
+        }
+
+        $item->updateTranslations($translations);
 
         contact()->clear_cache();
 

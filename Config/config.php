@@ -12,18 +12,18 @@ return [
         'email_subject'  => 'New contact message'
     ],
 
-    // some projects don't have text-block, that's why we can disable it
+    // Some projects don't have text-block, that's why we can disable it
     'text-block'      => true,
 
-    // some projects don't have map in contacts page, that's why we can disable it
+    // Some projects don't have map in contacts page, that's why we can disable it
     'map'             => true,
     'maps_api_key'    => '',
 
-    // some projects don't have information block, that's why we can disable it
+    // Some projects don't have information block, that's why we can disable it
     'information'     => [
-        'enabled'       => true, // this variable is responsible whether to use this block or not.
+        'enabled'       => true, // This variable is responsible whether to use this block or not.
 
-        // variables below are responsible for what information you want show in information block
+        // Variables below are responsible for what information you want show in information block
         'phone'         => true,
         'email'         => true,
         'workdays'      => true,
@@ -32,79 +32,108 @@ return [
         'contact-form'  => true
     ],
 
-    'form-data' => [
+    'items'         => [
         [
-            'key'          => 'name',
-            'type'         => 'text',
-            'meta'         => [
-                'attributes' => ['required'],
-                'options'    => [],
-                'validation' => ['required'],
-            ],
-            'translations' => [
-                'en' => [
-                    'label' => 'Name'
-                ]
-            ]
+            'type'  => 'phone',
+            'value' => '+371-12345678'
         ],
         [
-            'key'          => 'email',
-            'type'         => 'text',
-            'meta'         => [
-                'attributes' => ['required'],
-                'options'    => [],
-                'validation' => ['required', 'email'],
-            ],
-            'translations' => [
-                'en' => [
-                    'label' => 'Email'
-                ]
-            ]
+            'type'  => 'email',
+            'value' => 'info@finent.lv'
         ],
         [
-            'key'          => 'ad_id',
-            'type'         => 'text',
-            'meta'         => [
-                'attributes' => ['required'],
-                'options'    => [],
-                'validation' => ['required'],
-            ],
-            'translations' => [
-                'en' => [
-                    'label' => 'AD ID'
-                ]
-            ]
+            'type'  => 'location',
+            'value' => 'Kr. Barona 111, Rīga, Latvija, LV-4601'
         ],
         [
-            'key'          => 'phone',
-            'type'         => 'text',
-            'meta'         => [
-                'attributes' => ['required'],
-                'options'    => [],
-                'validation' => ['required'],
-            ],
-            'translations' => [
-                'en' => [
-                    'label' => 'Phone'
-                ]
-            ]
+            'type'  => 'contact-email',
+            'value' => 'info@finent.lv'
         ],
         [
-            'key'          => 'message',
-            'type'         => 'textarea',
-            'meta'         => [
-                'attributes' => ['required'],
-                'options'    => [],
-                'validation' => ['required'],
+            'type'  => 'workdays',
+            'value' => '{"workdays":"09:00 - 18:00","saturday":"09:00 - 15:00","sunday":"Closed"}'
+        ],
+    ],
+
+    // Contact form
+    'form'          => [
+        'name'            => 'Contact Us',
+        'success_message' => 'Your message was successfully submitted!',
+        'fields'          => [
+            [
+                'key'          => 'name',
+                'type'         => 'text',
+                'meta'         => [
+                    'attributes' => ['required'],
+                    'options'    => [],
+                    'validation' => ['required'],
+                ],
+                'translations' => [
+                    'en' => [
+                        'label' => 'Name'
+                    ]
+                ]
             ],
-            'translations' => [
-                'en' => [
-                    'label' => 'Message'
+            [
+                'key'          => 'email',
+                'type'         => 'text',
+                'meta'         => [
+                    'attributes' => ['required'],
+                    'options'    => [],
+                    'validation' => ['required', 'email'],
+                ],
+                'translations' => [
+                    'en' => [
+                        'label' => 'Email'
+                    ]
+                ]
+            ],
+            [
+                'key'          => 'ad_id',
+                'type'         => 'text',
+                'meta'         => [
+                    'attributes' => ['required'],
+                    'options'    => [],
+                    'validation' => ['required'],
+                ],
+                'translations' => [
+                    'en' => [
+                        'label' => 'AD ID'
+                    ]
+                ]
+            ],
+            [
+                'key'          => 'phone',
+                'type'         => 'text',
+                'meta'         => [
+                    'attributes' => ['required'],
+                    'options'    => [],
+                    'validation' => ['required'],
+                ],
+                'translations' => [
+                    'en' => [
+                        'label' => 'Phone'
+                    ]
+                ]
+            ],
+            [
+                'key'          => 'message',
+                'type'         => 'textarea',
+                'meta'         => [
+                    'attributes' => ['required'],
+                    'options'    => [],
+                    'validation' => ['required'],
+                ],
+                'translations' => [
+                    'en' => [
+                        'label' => 'Message'
+                    ]
                 ]
             ]
         ]
     ],
 
+    // Location
     'location-data' => [
         'en' => [
             'lat'           => '56.5130713',

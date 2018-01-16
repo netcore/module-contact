@@ -8,7 +8,7 @@
                     <i class="fa fa-undo"></i> Back to list
                 </a>
             </div>
-            <h4 class="panel-title">Edit item - {{ $item->type }}</h4>
+            <h4 class="panel-title">Edit item - {{ ucfirst($item->type) }}</h4>
         </div>
 
         <div class="panel-body">
@@ -22,10 +22,19 @@
                     <div role="tabpanel" class="tab-pane {{ $loop->first ? 'active' : '' }}"
                          id="{{ $language->iso_code }}">
 
-                        <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
-                            <label class="col-md-2 control-label">Value</label>
+                        <div class="form-group{{ $errors->has('translations.' . $language->iso_code . '.value') ? ' has-error' : '' }}">
+                            <label class="col-md-2 control-label"></label>
                             <div class="col-md-8">
-                                {!! Form::text('translations['.$language->iso_code.'][value]', trans_model((isset($item) ? $item : null), $language, 'value'), ['class' => 'form-control']) !!}
+                                @if($item->type == 'workdays')
+                                    <ul>
+                                        @foreach(json_decode($item->value) as $day => $time)
+                                            <label>{{ ucfirst($day) }}</label>
+                                            {!! Form::text('translations['.$language->iso_code.']['.$day.']', $time, ['class' => 'form-control']) !!}
+                                        @endforeach
+                                    </ul>
+                                @else
+                                    {!! Form::text('translations['.$language->iso_code.'][value]', trans_model((isset($item) ? $item : null), $language, 'value'), ['class' => 'form-control']) !!}
+                                @endif
                             </div>
                         </div>
                     </div>
