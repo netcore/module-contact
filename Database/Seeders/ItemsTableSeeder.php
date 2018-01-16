@@ -19,38 +19,16 @@ class ItemsTableSeeder extends Seeder
     {
         Model::unguard();
 
-        $items = [
-            [
-                'type'             => 'phone',
-                'value'            => '+371-12345678',
-                'is_translateable' => 1,
-            ],
-            [
-                'type'             => 'email',
-                'value'            => 'info@admin.com',
-                'is_translateable' => 1,
-            ],
-            [
-                'type'             => 'location',
-                'value'            => 'Kr. Barona 111. Rīga, Latvia Lv4601',
-                'is_translateable' => 1,
-            ],
-            [
-                'type'             => 'contact-email',
-                'value'            => 'contact@admin.com',
-                'is_translateable' => 1,
-            ],
-            [
-                'type'             => 'workdays',
-                'value'            => '{"Monday - Friday":"09:00 - 18:00","Saturday":"09:00 - 15:00","Sunday":"Closed"}',
-                'is_translateable' => 1,
-            ],
-        ];
+        $items = config('netcore.module-contact.items');
 
         foreach ($items as $item) {
-            $i = Item::create(array_except($item, ['value']));
+            $i = Item::create([
+                'type'             => $item['type'],
+                'is_translateable' => 1
+            ]);
+
             foreach (TransHelper::getAllLanguages() as $language) {
-                $i->storeTranslations([$language->iso_code => array_except($item, ['type', 'is_translateable'])]);
+                $i->storeTranslations([$language->iso_code => array_only($item, ['value'])]);
             }
         }
     }

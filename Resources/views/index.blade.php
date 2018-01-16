@@ -53,7 +53,7 @@
                                                 <b>{{ strtoupper($language->iso_code) }}</b>
                                                 <ul>
                                                     @foreach(json_decode(trans_model($item, $language, 'value')) as $day => $time)
-                                                        <li><b>{{ $day }}</b>: {{ $time }}</li>
+                                                        <li><b>{{ ucfirst($day) }}</b>: {{ $time }}</li>
                                                     @endforeach
                                                 </ul>
                                             @endforeach
