@@ -19,7 +19,7 @@ class ItemsTableSeeder extends Seeder
     {
         Model::unguard();
 
-        $items = config('netcore.module-contact.items');
+        $items = (array) config('netcore.module-contact.items');
 
         foreach ($items as $item) {
             $i = Item::create([
