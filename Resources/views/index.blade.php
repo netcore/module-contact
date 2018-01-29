@@ -57,15 +57,13 @@
                                                     @endforeach
                                                 </ul>
                                             @endforeach
-
                                         @else
                                             @if($item->type == 'contact-form')
                                                 {{ $item->form->name }}
                                             @else
                                                 <ul>
                                                     @foreach(\Netcore\Translator\Helpers\TransHelper::getAllLanguages() as $language)
-                                                        <li><b>{{ strtoupper($language->iso_code) }}
-                                                                :</b> {{ trans_model($item, $language, 'value') }}</li>
+                                                        <li><b>{{ strtoupper($language->iso_code) }}:</b> {{ trans_model($item, $language, 'value') }}</li>
                                                     @endforeach
                                                 </ul>
                                             @endif
@@ -74,8 +72,8 @@
                                     <td width="10%" class="text-center">
                                         @if($item->type == 'contact-form')
                                             <button data-id="{{ $item->id }}" class="btn btn-primary btn-sm edit-item"
-                                                    data-toggle="modal" data-target="#edit-item"><i
-                                                        class="fa fa-edit"></i> Edit
+                                                    data-toggle="modal" data-target="#edit-item">
+                                                <i class="fa fa-edit"></i> Edit
                                             </button>
                                         @else
                                             <a href="{{ route('admin::contact.item.edit', $item->id) }}"
@@ -172,37 +170,31 @@
 @endsection
 
 @section('scripts')
-    @if($config['map'])
-        <script src="{{ versionedAsset('/assets/contact/js/contact.js') }}"></script>
-    @endif
+    <script src="{{ versionedAsset('/assets/contact/js/contact.js') }}"></script>
     <script>
-                @if($config['map'])
-                @foreach(\Netcore\Translator\Helpers\TransHelper::getAllLanguages() as $language)
-        var latLong_{{ $language->iso_code }};
-        var map_{{ $language->iso_code }};
-        var geocoder_{{ $language->iso_code }};
-
+     @if($config['map'])
+        @foreach(\Netcore\Translator\Helpers\TransHelper::getAllLanguages() as $language)
+            var latLong_{{ $language->iso_code }};
+            var map_{{ $language->iso_code }};
+            var geocoder_{{ $language->iso_code }};
         @endforeach
         $(window).on('load', function () {
             @foreach(\Netcore\Translator\Helpers\TransHelper::getAllLanguages() as $language)
                 geocoder_{{ $language->iso_code }} = new google.maps.Geocoder();
-            var locale = '{{ $language->iso_code }}';
-            var map_lat = $('input[name="translations[' + locale + '][lat]"]').val();
-            var map_lng = $('input[name="translations[' + locale + '][lng]"]').val();
+                var locale = '{{ $language->iso_code }}';
+                var map_lat = $('input[name="translations[' + locale + '][lat]"]').val();
+                var map_lng = $('input[name="translations[' + locale + '][lng]"]').val();
 
-            latLong_{{ $language->iso_code }} = new google.maps.LatLng(map_lat, map_lng);
-            map_{{ $language->iso_code }} = new google.maps.Map(document.getElementById('contact-map-' + locale), {
-                center: latLong_{{ $language->iso_code }},
-                zoom: 12
-            });
-            markers_{{ $language->iso_code }} = {};
-
-
-            markers_{{ $language->iso_code }}[latLong_{{ $language->iso_code }}] = new google.maps.Marker({
-                position: latLong_{{ $language->iso_code }},
-                map: map_{{ $language->iso_code }}
-            });
-
+                latLong_{{ $language->iso_code }} = new google.maps.LatLng(map_lat, map_lng);
+                map_{{ $language->iso_code }} = new google.maps.Map(document.getElementById('contact-map-' + locale), {
+                    center: latLong_{{ $language->iso_code }},
+                    zoom: 12
+                });
+                markers_{{ $language->iso_code }} = {};
+                markers_{{ $language->iso_code }}[latLong_{{ $language->iso_code }}] = new google.maps.Marker({
+                    position: latLong_{{ $language->iso_code }},
+                    map: map_{{ $language->iso_code }}
+                });
             @endforeach
         });
         @endif
@@ -228,11 +220,11 @@
                 ajax: '{{ route('admin::form.entries.pagination', $form->id) }}',
 
                 columns: [
-                        @foreach ($form->fields as $field)
+                @foreach ($form->fields as $field)
                     {
                         data: '{{ $field->key }}', name: '{{ $field->key }}'
                     },
-                        @endforeach
+                @endforeach
                     {
                         data: 'created_at',
                         name: 'created_at',
@@ -250,7 +242,6 @@
                         className: 'text-center'
                     }
                 ]
-
             });
             @endif
         });
