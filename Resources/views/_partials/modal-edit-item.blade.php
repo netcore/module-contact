@@ -1,11 +1,9 @@
 <div id="edit-item" class="modal fade" role="dialog">
     <div class="modal-dialog">
-
-        <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Modal Header</h4>
+                <h4 class="modal-title">Contact Item</h4>
             </div>
             <div class="modal-body">
                 {{ Form::open(['route' => 'admin::contact.item.update', 'method' => 'put', 'class' => 'js-edit-field']) }}
@@ -20,19 +18,16 @@
                     <div class="js-workday-fields hidden">
                         <table class="table table-bordered">
                             <thead>
-                                <tr>
-                                    <th>Days</th>
-                                    <th>Work hours</th>
-                                </tr>
+                            <tr>
+                                <th>Days</th>
+                                <th>Work hours</th>
+                            </tr>
                             </thead>
-                            <tbody>
-
-                            </tbody>
+                            <tbody></tbody>
                         </table>
                     </div>
                     <div class="js-contact-form hidden">
                         <select name="value" class="form-control">
-
                         </select>
                     </div>
 
@@ -54,6 +49,5 @@
                 {{ Form::close() }}
             </div>
         </div>
-
     </div>
 </div>
