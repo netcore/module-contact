@@ -39,7 +39,7 @@ return [
         ],
         [
             'type'  => 'email',
-            'value' => 'info@finent.lv'
+            'value' => 'info@admin.lv'
         ],
         [
             'type'  => 'location',
@@ -47,7 +47,7 @@ return [
         ],
         [
             'type'  => 'contact-email',
-            'value' => 'info@finent.lv'
+            'value' => 'info@admin.lv'
         ],
         [
             'type'  => 'workdays',
