@@ -37,17 +37,15 @@ class ContactServiceProvider extends ServiceProvider
         $module = Module::find('form');
 
         if ($module && $module->enabled()) {
-            if (config('netcore.module-contact.notify.enabled')) {
-                FormsRepository::addNewEvent('contact-us', function ($data) {
+            FormsRepository::addNewEvent('contact-us', function ($data) {
+                if (config('netcore.module-contact.notify.enabled')) {
                     Mail::to(contact()->item('contact-email'))->queue(new NotifyAboutContactMessage($data));
-                });
-            }
+                }
 
-            if (config('netcore.module-contact.response.enabled')) {
-                FormsRepository::addNewEvent('contact-us', function ($data) {
+                if (config('netcore.module-contact.response.enabled')) {
                     Mail::to(contact()->item('contact-email'))->queue(new RespondAboutContactMessage($data));
-                });
-            }
+                }
+            });
         }
     }
 
