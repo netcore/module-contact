@@ -5,9 +5,8 @@ namespace Modules\Contact\Emails;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
-class NotifyAboutContactMessage extends Mailable
+class RespondAboutContactMessage extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -39,10 +38,9 @@ class NotifyAboutContactMessage extends Mailable
      */
     public function build()
     {
-        $template = $this->config['response']['email_template'] ?: 'contact::emails.contact-notification';
-        $this->subject($this->config['response']['email_subject']);
-
-        $this->from($this->config['response']['from'], $this->config['response']['from']);
+        $template = $this->config['notify']['email_template'] ?: 'contact::emails.contact-response';
+        $this->subject($this->config['notify']['email_subject']);
+        $this->from($this->data['email'], array_get($this->data, 'name'));
 
         return $this->view($template, compact('data'));
     }

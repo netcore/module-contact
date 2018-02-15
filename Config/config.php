@@ -12,15 +12,22 @@ return [
         'email_subject'  => 'New contact message'
     ],
 
+    'response'     => [
+        'enabled'        => true,
+        'from'           => 'donotreply@example.com',
+        'email_template' => null,
+        'email_subject'  => 'We\'ve received your message'
+    ],
+
     // Some projects don't have text-block, that's why we can disable it
-    'text-block'      => true,
+    'text-block'   => true,
 
     // Some projects don't have map in contacts page, that's why we can disable it
-    'map'             => true,
-    'maps_api_key'    => '',
+    'map'          => true,
+    'maps_api_key' => '',
 
     // Some projects don't have information block, that's why we can disable it
-    'information'     => [
+    'information'  => [
         'enabled'       => true, // This variable is responsible whether to use this block or not.
 
         // Variables below are responsible for what information you want show in information block
