@@ -5,6 +5,7 @@ namespace Modules\Contact\Emails;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Nwidart\Modules\Facades\Module;
 
 class RespondAboutContactMessage extends Mailable
 {
