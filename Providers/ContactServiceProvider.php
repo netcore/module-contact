@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
 use Modules\Contact\Emails\NotifyAboutContactMessage;
+use Modules\Contact\Emails\RespondAboutContactMessage;
 use Modules\Contact\Repositories\ContactRepository;
 use Modules\Form\Repositories\FormsRepository;
 use Nwidart\Modules\Facades\Module;
@@ -35,10 +36,18 @@ class ContactServiceProvider extends ServiceProvider
 
         $module = Module::find('form');
 
-        if ($module && $module->enabled() && config('netcore.module-contact.notify.enabled')) {
-            FormsRepository::addNewEvent('contact-us', function ($data) {
-                Mail::to(contact()->item('contact-email'))->queue(new NotifyAboutContactMessage($data));
-            });
+        if ($module && $module->enabled()) {
+            if (config('netcore.module-contact.notify.enabled')) {
+                FormsRepository::addNewEvent('contact-us', function ($data) {
+                    Mail::to(contact()->item('contact-email'))->queue(new NotifyAboutContactMessage($data));
+                });
+            }
+
+            if (config('netcore.module-contact.response.enabled')) {
+                FormsRepository::addNewEvent('contact-us', function ($data) {
+                    Mail::to(contact()->item('contact-email'))->queue(new RespondAboutContactMessage($data));
+                });
+            }
         }
     }
 
