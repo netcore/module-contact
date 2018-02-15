@@ -38,9 +38,16 @@ class RespondAboutContactMessage extends Mailable
      */
     public function build()
     {
-        $template = $this->config['notify']['email_template'] ?: 'contact::emails.contact-response';
-        $this->subject($this->config['notify']['email_subject']);
-        $this->from($this->data['email'], array_get($this->data, 'name'));
+        $template = $this->config['response']['email_template'] ?: 'contact::emails.contact-notification';
+        $this->subject($this->config['response']['email_subject']);
+
+        $module = Module::find('setting');
+
+        if ($module && $module->enabled()) {
+            $this->from(setting()->get('mail_from_address', $this->config['response']['from']), setting()->get('mail_from_name', $this->config['response']['from']));
+        } else {
+            $this->from($this->config['response']['from'], $this->config['response']['from']);
+        }
 
         return $this->view($template, compact('data'));
     }
