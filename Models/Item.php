@@ -19,7 +19,16 @@ class Item extends Model
      */
     protected $table = 'netcore_contact__items';
 
-    protected $fillable = ['default_value', 'type', 'is_translateable'];
+    /**
+     * Fillable fields
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'default_value',
+        'type',
+        'is_translateable'
+    ];
 
     /**
      * @var string

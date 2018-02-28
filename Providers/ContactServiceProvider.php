@@ -43,7 +43,7 @@ class ContactServiceProvider extends ServiceProvider
                 }
 
                 if (config('netcore.module-contact.response.enabled')) {
-                    if(isset($data['email'])){
+                    if (isset($data['email'])) {
                         Mail::to($data['email'])->queue(new RespondAboutContactMessage($data));
                     }
                 }

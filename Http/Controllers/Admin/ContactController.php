@@ -71,9 +71,7 @@ class ContactController extends Controller
     public function updateMap(Request $request)
     {
         $location = Location::find(1);
-        $location->updateTranslations(
-            $request->input('translations', [])
-        );
+        $location->updateTranslations($request->input('translations', []));
 
         return redirect()->back()->withSuccess('Location data successfully updated!');
     }
