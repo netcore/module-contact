@@ -1,14 +1,22 @@
 <?php
-namespace Modules\Contact\Translations;
 
+namespace Modules\Contact\Translations;
 
 use Illuminate\Database\Eloquent\Model;
 
 class ItemTranslation extends Model
 {
 
-    protected $table = 'netcore_contact__item_translations';
     /**
+     * Table name
+     *
+     * @var string
+     */
+    protected $table = 'netcore_contact__item_translations';
+
+    /**
+     * Fillable fields
+     *
      * @var array
      */
     protected $fillable = [
@@ -17,6 +25,8 @@ class ItemTranslation extends Model
     ];
 
     /**
+     * Disable timestamps
+     *
      * @var bool
      */
     public $timestamps = false;

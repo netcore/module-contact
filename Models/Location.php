@@ -18,6 +18,11 @@ class Location extends Model
      */
     protected $table = 'netcore_contact__locations';
 
+    /**
+     * Fillable fields
+     *
+     * @var array
+     */
     protected $fillable = ['is_active'];
 
     /**

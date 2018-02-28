@@ -13,7 +13,17 @@ class Content extends Model
      */
     protected $table = 'netcore_contact__content';
 
+    /**
+     * Fillable fields
+     *
+     * @var array
+     */
     protected $fillable = ['text'];
 
+    /**
+     * Disable timestamps
+     *
+     * @var bool
+     */
     public $timestamps = false;
 }

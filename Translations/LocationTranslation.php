@@ -1,14 +1,22 @@
 <?php
-namespace Modules\Contact\Translations;
 
+namespace Modules\Contact\Translations;
 
 use Illuminate\Database\Eloquent\Model;
 
 class LocationTranslation extends Model
 {
 
-    protected $table = 'netcore_contact__location_translations';
     /**
+     * Table name
+     *
+     * @var string
+     */
+    protected $table = 'netcore_contact__location_translations';
+
+    /**
+     * Fillable fields
+     *
      * @var array
      */
     protected $fillable = [
@@ -23,6 +31,8 @@ class LocationTranslation extends Model
     ];
 
     /**
+     * Disable timestamps
+     *
      * @var bool
      */
     public $timestamps = false;
