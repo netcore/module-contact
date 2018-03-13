@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 class NotifyAboutContactMessage extends Mailable
 {
+
     use Queueable, SerializesModels;
 
     /**
@@ -39,8 +40,26 @@ class NotifyAboutContactMessage extends Mailable
      */
     public function build()
     {
-        $template = $this->config['notify']['email_template'] ?: 'contact::emails.contact-response';
-        $this->subject($this->config['notify']['email_subject']);
+        $template = $this->config['notify']['email_template'] ?: 'contact::emails.contact-notification';
+        $subject = $this->config['notify']['email_subject'];
+        foreach ($this->data as $key => $value) {
+            if ($key == 'created_at') {
+                $subject = str_replace(':' . strtoupper($key), \Carbon\Carbon::parse($value)->format('Y, j M, H:i'),
+                    $subject);
+            } elseif ($key == 'message') {
+                if (str_word_count($value) > 7) {
+                    $message = implode(' ', array_slice(explode(' ', $value), 0, 7)) . '...';
+                } else {
+                    $message = $value;
+                }
+
+                $subject = str_replace(':' . strtoupper($key), $message, $subject);
+            } else {
+                $subject = str_replace(':' . strtoupper($key), $value, $subject);
+            }
+        }
+
+        $this->subject($subject);
         $this->from($this->data['email'], array_get($this->data, 'name'));
 
         return $this->view($template, compact('data'));
